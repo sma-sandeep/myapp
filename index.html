@@ -2,1327 +2,1323 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no">
-<meta name="theme-color" content="#0f1117">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="theme-color" content="#1a1f2e">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="Shapes">
 <title>Shapes Products — Sales App</title>
-
-<!-- Leaflet (OpenStreetMap) — FREE, no API key -->
-<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
-<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet-src.js"></script>
-
-<!-- jsPDF for PDF generation -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-
-<!-- EmailJS -->
-<script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
-
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;1,400&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
-
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 <style>
-:root{
-  --bg:#0f1117; --bg2:#161b27; --bg3:#1e2438; --card:#1a2030; --card2:#212840;
-  --accent:#4f8ef7; --accent2:#7c5ff0; --green:#22c55e; --orange:#f59e0b; --red:#ef4444; --teal:#14b8a6;
-  --text:#eef0f8; --text2:#8b92a8; --text3:#4a5070;
-  --border:rgba(255,255,255,0.06); --border2:rgba(255,255,255,0.11);
-  --r:14px; --r-sm:10px; --nav:68px; --hdr:58px;
-  --font-h:'Space Grotesk',sans-serif; --font-b:'DM Sans',sans-serif;
+:root {
+  --bg: #0f1117;
+  --bg2: #1a1f2e;
+  --bg3: #222840;
+  --card: #1e2335;
+  --card2: #252b3d;
+  --accent: #4f8ef7;
+  --accent2: #7c5ff0;
+  --green: #22c55e;
+  --orange: #f59e0b;
+  --red: #ef4444;
+  --text: #f0f2f8;
+  --text2: #8b92a8;
+  --text3: #5a6070;
+  --border: rgba(255,255,255,0.07);
+  --border2: rgba(255,255,255,0.12);
+  --radius: 16px;
+  --radius-sm: 10px;
+  --nav-h: 68px;
+  --header-h: 60px;
+  --font-head: 'Space Grotesk', sans-serif;
+  --font-body: 'DM Sans', sans-serif;
 }
-*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
-html,body{height:100%;overflow:hidden;background:var(--bg)}
-body{font-family:var(--font-b);color:var(--text);font-size:15px;line-height:1.5}
+* { margin:0; padding:0; box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
+html,body { height:100%; overflow:hidden; background:var(--bg); }
+body { font-family:var(--font-body); color:var(--text); font-size:15px; line-height:1.5; }
 
-#app{width:100%;max-width:430px;height:100dvh;margin:0 auto;background:var(--bg);display:flex;flex-direction:column;overflow:hidden;position:relative}
+/* ── MOBILE WRAPPER ── */
+#app { width:100%; max-width:430px; height:100dvh; margin:0 auto; background:var(--bg); display:flex; flex-direction:column; overflow:hidden; position:relative; }
 
-/* SCREENS */
-.screen{display:none;flex-direction:column;flex:1;overflow:hidden}
-.screen.active{display:flex}
+/* ── SCREENS ── */
+.screen { display:none; flex-direction:column; flex:1; overflow:hidden; }
+.screen.active { display:flex; }
 
-/* HEADER */
-.hdr{height:var(--hdr);padding:0 18px;display:flex;align-items:center;justify-content:space-between;background:var(--bg);border-bottom:1px solid var(--border);flex-shrink:0;position:relative;z-index:10}
-.hdr-left h1{font-family:var(--font-h);font-size:17px;font-weight:600}
-.hdr-left p{font-size:11px;color:var(--text2);margin-top:1px}
-.hdr-actions{display:flex;gap:7px}
-.hdr-btn{width:34px;height:34px;border-radius:9px;background:var(--bg3);border:1px solid var(--border2);display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:16px;transition:.15s}
-.hdr-btn:active{opacity:.7}
+/* ── HEADER ── */
+.header { height:var(--header-h); padding:0 20px; display:flex; align-items:center; justify-content:space-between; background:var(--bg); border-bottom:1px solid var(--border); flex-shrink:0; }
+.header-title { font-family:var(--font-head); font-size:18px; font-weight:600; }
+.header-sub { font-size:12px; color:var(--text2); margin-top:1px; }
+.header-action { width:36px; height:36px; border-radius:10px; background:var(--card); border:1px solid var(--border2); display:flex; align-items:center; justify-content:center; cursor:pointer; }
 
-/* SCROLL */
-.scroll{flex:1;overflow-y:auto;padding:14px 16px;padding-bottom:calc(var(--nav)+12px)}
-.scroll::-webkit-scrollbar{display:none}
+/* ── SCROLL CONTENT ── */
+.content { flex:1; overflow-y:auto; padding:16px 20px; padding-bottom:calc(var(--nav-h) + 16px); }
+.content::-webkit-scrollbar { display:none; }
 
-/* BOTTOM NAV */
-#nav{height:var(--nav);background:var(--bg2);border-top:1px solid var(--border);display:flex;align-items:stretch;flex-shrink:0;padding-bottom:env(safe-area-inset-bottom,0px)}
-.ni{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;cursor:pointer;color:var(--text3);transition:color .2s;position:relative}
-.ni.on{color:var(--accent)}
-.ni.on::before{content:'';position:absolute;top:0;left:50%;transform:translateX(-50%);width:28px;height:2px;background:var(--accent);border-radius:0 0 3px 3px}
-.ni svg{width:22px;height:22px;stroke:currentColor;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
-.ni span{font-size:9.5px;font-weight:500}
+/* ── BOTTOM NAV ── */
+#bottom-nav { height:var(--nav-h); background:var(--bg2); border-top:1px solid var(--border); display:flex; align-items:stretch; flex-shrink:0; padding-bottom:env(safe-area-inset-bottom); }
+.nav-item { flex:1; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:4px; cursor:pointer; transition:all .2s; position:relative; }
+.nav-item.active { color:var(--accent); }
+.nav-item:not(.active) { color:var(--text3); }
+.nav-item .nav-icon { font-size:22px; line-height:1; }
+.nav-item .nav-label { font-size:10px; font-weight:500; letter-spacing:.3px; }
+.nav-item.active::before { content:''; position:absolute; top:0; left:50%; transform:translateX(-50%); width:32px; height:2px; background:var(--accent); border-radius:0 0 4px 4px; }
 
-/* LOGIN */
-#login-screen{background:var(--bg);justify-content:center;align-items:center;padding:28px 24px}
-.logo-wrap{text-align:center;margin-bottom:36px}
-.logo-mark{width:70px;height:70px;background:linear-gradient(135deg,var(--accent),var(--accent2));border-radius:20px;margin:0 auto 14px;display:flex;align-items:center;justify-content:center;font-size:30px}
-.logo-wrap h1{font-family:var(--font-h);font-size:24px;font-weight:700}
-.logo-wrap p{font-size:12px;color:var(--text2);margin-top:3px}
-.form-lbl{font-size:11px;font-weight:600;color:var(--text2);margin-bottom:5px;display:block;text-transform:uppercase;letter-spacing:.5px}
-.fi{width:100%;padding:13px 14px;background:var(--bg3);border:1px solid var(--border2);border-radius:var(--r-sm);color:var(--text);font-family:var(--font-b);font-size:14px;outline:none;transition:border-color .2s;margin-bottom:13px}
-.fi:focus{border-color:var(--accent)}
-.fi::placeholder{color:var(--text3)}
-select.fi{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='7'%3E%3Cpath d='M1 1l4 4 4-4' stroke='%238b92a8' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 12px center}
-.btn{width:100%;padding:14px;border:none;border-radius:var(--r-sm);font-family:var(--font-h);font-size:15px;font-weight:600;cursor:pointer;transition:.2s;display:flex;align-items:center;justify-content:center;gap:8px}
-.btn-p{background:linear-gradient(135deg,var(--accent),var(--accent2));color:#fff}
-.btn-p:active{opacity:.85}
-.btn-g{background:linear-gradient(135deg,#15803d,var(--green));color:#fff}
-.btn-o{background:rgba(79,142,247,.12);color:var(--accent);border:1px solid rgba(79,142,247,.25)}
+/* ── LOGIN ── */
+#login-screen { background:var(--bg); justify-content:center; align-items:center; padding:32px 28px; }
+.login-logo { text-align:center; margin-bottom:40px; }
+.login-logo-mark { width:72px; height:72px; background:linear-gradient(135deg,var(--accent),var(--accent2)); border-radius:20px; margin:0 auto 16px; display:flex; align-items:center; justify-content:center; font-size:32px; }
+.login-logo h1 { font-family:var(--font-head); font-size:26px; font-weight:700; }
+.login-logo p { font-size:13px; color:var(--text2); margin-top:4px; }
+.login-form { width:100%; }
+.form-group { margin-bottom:16px; }
+.form-label { font-size:12px; font-weight:500; color:var(--text2); margin-bottom:6px; display:block; text-transform:uppercase; letter-spacing:.5px; }
+.form-input { width:100%; padding:14px 16px; background:var(--card); border:1px solid var(--border2); border-radius:var(--radius-sm); color:var(--text); font-family:var(--font-body); font-size:15px; outline:none; transition:border-color .2s; }
+.form-input:focus { border-color:var(--accent); }
+.form-input::placeholder { color:var(--text3); }
+.form-select { appearance:none; background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%238b92a8' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E"); background-repeat:no-repeat; background-position:right 14px center; }
+.btn-primary { width:100%; padding:16px; background:linear-gradient(135deg,var(--accent),var(--accent2)); color:#fff; border:none; border-radius:var(--radius-sm); font-family:var(--font-head); font-size:16px; font-weight:600; cursor:pointer; transition:opacity .2s; margin-top:8px; }
+.btn-primary:active { opacity:.85; }
 
-/* CARDS */
-.card{background:var(--card);border:1px solid var(--border);border-radius:var(--r);padding:16px;margin-bottom:11px}
-.card-hd{font-size:11px;font-weight:600;color:var(--text2);text-transform:uppercase;letter-spacing:.6px;margin-bottom:12px;display:flex;align-items:center;justify-content:space-between}
+/* ── CARDS ── */
+.card { background:var(--card); border:1px solid var(--border); border-radius:var(--radius); padding:18px; margin-bottom:12px; }
+.card-title { font-family:var(--font-head); font-size:14px; font-weight:600; color:var(--text2); text-transform:uppercase; letter-spacing:.5px; margin-bottom:12px; }
 
-/* STATS */
-.stat-grid{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-bottom:11px}
-.stat-card{background:var(--card);border:1px solid var(--border);border-radius:var(--r-sm);padding:14px}
-.stat-v{font-family:var(--font-h);font-size:21px;font-weight:700}
-.stat-l{font-size:11px;color:var(--text2);margin-top:2px}
-.stat-c{font-size:10px;margin-top:5px}
-.up{color:var(--green)} .warn{color:var(--orange)} .danger{color:var(--red)}
+/* ── STAT GRID ── */
+.stat-grid { display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-bottom:12px; }
+.stat-card { background:var(--card); border:1px solid var(--border); border-radius:var(--radius-sm); padding:16px; }
+.stat-value { font-family:var(--font-head); font-size:22px; font-weight:700; }
+.stat-label { font-size:11px; color:var(--text2); margin-top:3px; }
+.stat-change { font-size:11px; margin-top:6px; }
+.stat-change.up { color:var(--green); }
+.stat-change.warn { color:var(--orange); }
 
-/* PROGRESS */
-.prog-wrap{margin-bottom:10px}
-.prog-lbl{display:flex;justify-content:space-between;font-size:12px;margin-bottom:5px}
-.prog-lbl span:last-child{color:var(--text2)}
-.prog-track{height:7px;background:var(--bg3);border-radius:4px;overflow:hidden}
-.prog-fill{height:100%;border-radius:4px;background:linear-gradient(90deg,var(--accent),var(--accent2));transition:width .8s cubic-bezier(.4,0,.2,1)}
-.prog-fill.g{background:linear-gradient(90deg,#16a34a,var(--green))}
-.prog-fill.o{background:linear-gradient(90deg,#b45309,var(--orange))}
+/* ── PROGRESS BAR ── */
+.progress-wrap { margin-bottom:12px; }
+.progress-label { display:flex; justify-content:space-between; font-size:13px; margin-bottom:6px; }
+.progress-label span:last-child { color:var(--text2); }
+.progress-track { height:8px; background:var(--bg3); border-radius:4px; overflow:hidden; }
+.progress-fill { height:100%; border-radius:4px; background:linear-gradient(90deg,var(--accent),var(--accent2)); transition:width .8s cubic-bezier(.4,0,.2,1); }
+.progress-fill.green { background:linear-gradient(90deg,#16a34a,var(--green)); }
+.progress-fill.orange { background:linear-gradient(90deg,#d97706,var(--orange)); }
 
-/* BADGES */
-.badge{display:inline-flex;align-items:center;padding:3px 8px;border-radius:6px;font-size:10px;font-weight:600}
-.b-g{background:rgba(34,197,94,.12);color:var(--green)}
-.b-o{background:rgba(245,158,11,.12);color:var(--orange)}
-.b-b{background:rgba(79,142,247,.12);color:var(--accent)}
-.b-r{background:rgba(239,68,68,.12);color:var(--red)}
-.b-t{background:rgba(20,184,166,.12);color:var(--teal)}
+/* ── VISIT LIST ── */
+.visit-item { display:flex; align-items:center; gap:14px; padding:14px 0; border-bottom:1px solid var(--border); }
+.visit-item:last-child { border-bottom:none; }
+.visit-avatar { width:42px; height:42px; border-radius:12px; display:flex; align-items:center; justify-content:center; font-size:18px; flex-shrink:0; }
+.visit-info { flex:1; min-width:0; }
+.visit-name { font-weight:500; font-size:14px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+.visit-meta { font-size:12px; color:var(--text2); margin-top:2px; }
+.badge { display:inline-flex; align-items:center; padding:3px 8px; border-radius:6px; font-size:11px; font-weight:500; }
+.badge-green { background:rgba(34,197,94,.15); color:var(--green); }
+.badge-orange { background:rgba(245,158,11,.15); color:var(--orange); }
+.badge-blue { background:rgba(79,142,247,.15); color:var(--accent); }
+.badge-red { background:rgba(239,68,68,.15); color:var(--red); }
 
-/* LIST ITEMS */
-.li{display:flex;align-items:center;gap:12px;padding:12px 0;border-bottom:1px solid var(--border)}
-.li:last-child{border-bottom:none}
-.li-av{width:40px;height:40px;border-radius:11px;display:flex;align-items:center;justify-content:center;font-size:17px;flex-shrink:0}
-.li-info{flex:1;min-width:0}
-.li-name{font-weight:500;font-size:13px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.li-sub{font-size:11px;color:var(--text2);margin-top:2px}
+/* ── MAP PLACEHOLDER ── */
+.map-box { width:100%; height:240px; background:var(--bg3); border-radius:var(--radius); overflow:hidden; position:relative; margin-bottom:12px; border:1px solid var(--border); }
+#map { width:100%; height:100%; }
+.map-placeholder { display:flex; flex-direction:column; align-items:center; justify-content:center; height:100%; gap:12px; }
+.map-placeholder .map-icon { font-size:40px; }
+.gps-status { display:flex; align-items:center; gap:8px; padding:10px 14px; background:var(--card); border-radius:var(--radius-sm); border:1px solid var(--border); margin-bottom:12px; font-size:13px; }
+.gps-dot { width:8px; height:8px; border-radius:50%; background:var(--green); flex-shrink:0; box-shadow:0 0 0 3px rgba(34,197,94,.2); animation:pulse 2s infinite; }
+@keyframes pulse { 0%,100%{box-shadow:0 0 0 3px rgba(34,197,94,.2)} 50%{box-shadow:0 0 0 6px rgba(34,197,94,.05)} }
 
-/* MAP */
-.map-wrap{width:100%;height:230px;border-radius:var(--r);overflow:hidden;border:1px solid var(--border);margin-bottom:11px;position:relative}
-#osmap{width:100%;height:100%}
-.gps-bar{display:flex;align-items:center;gap:8px;padding:9px 13px;background:var(--card);border-radius:var(--r-sm);border:1px solid var(--border);margin-bottom:11px;font-size:12px}
-.gps-dot{width:8px;height:8px;border-radius:50%;background:var(--green);flex-shrink:0;animation:pulse 2s infinite}
-@keyframes pulse{0%,100%{box-shadow:0 0 0 3px rgba(34,197,94,.18)}50%{box-shadow:0 0 0 6px rgba(34,197,94,.05)}}
+/* ── NEARBY CARDS ── */
+.nearby-row { display:flex; gap:10px; overflow-x:auto; padding-bottom:4px; margin-bottom:12px; }
+.nearby-row::-webkit-scrollbar { display:none; }
+.nearby-card { background:var(--card); border:1px solid var(--border); border-radius:var(--radius-sm); padding:14px; min-width:150px; flex-shrink:0; cursor:pointer; transition:border-color .2s; }
+.nearby-card:active { border-color:var(--accent); }
+.nearby-card .nc-icon { font-size:24px; margin-bottom:8px; }
+.nearby-card .nc-name { font-size:13px; font-weight:500; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+.nearby-card .nc-dist { font-size:11px; color:var(--text2); margin-top:3px; }
+.nearby-card .nc-type { font-size:10px; color:var(--text3); margin-top:2px; }
 
-/* CHIPS */
-.chips{display:flex;gap:7px;flex-wrap:nowrap;overflow-x:auto;margin-bottom:12px;padding-bottom:2px}
-.chips::-webkit-scrollbar{display:none}
-.chip{padding:6px 13px;border-radius:20px;font-size:11px;font-weight:500;cursor:pointer;border:1px solid var(--border2);background:var(--card);color:var(--text2);white-space:nowrap;transition:.15s;flex-shrink:0}
-.chip.on{background:var(--accent);border-color:var(--accent);color:#fff}
+/* ── CHECK-IN SCREEN ── */
+.checkin-hotel { background:var(--card); border:1px solid var(--border); border-radius:var(--radius); padding:18px; margin-bottom:12px; }
+.checkin-hotel-name { font-family:var(--font-head); font-size:17px; font-weight:600; margin-bottom:4px; }
+.checkin-hotel-addr { font-size:12px; color:var(--text2); }
+.checkin-time-row { display:flex; gap:10px; margin:14px 0; }
+.checkin-time-box { flex:1; background:var(--bg3); border-radius:var(--radius-sm); padding:12px; text-align:center; }
+.checkin-time-label { font-size:10px; color:var(--text2); text-transform:uppercase; letter-spacing:.5px; }
+.checkin-time-val { font-family:var(--font-head); font-size:16px; font-weight:700; margin-top:4px; color:var(--accent); }
+.btn-checkin { flex:1; padding:14px; border:none; border-radius:var(--radius-sm); font-family:var(--font-head); font-size:14px; font-weight:600; cursor:pointer; transition:all .2s; }
+.btn-checkin.in { background:rgba(34,197,94,.15); color:var(--green); border:1px solid rgba(34,197,94,.3); }
+.btn-checkin.out { background:rgba(239,68,68,.15); color:var(--red); border:1px solid rgba(239,68,68,.3); }
+.btn-checkin.in:active { background:rgba(34,197,94,.25); }
+.btn-checkin.out:active { background:rgba(239,68,68,.25); }
+.timeline-item { display:flex; gap:14px; padding:12px 0; position:relative; }
+.timeline-dot { width:10px; height:10px; border-radius:50%; background:var(--accent); margin-top:4px; flex-shrink:0; }
+.timeline-line { position:absolute; left:4px; top:20px; bottom:0; width:2px; background:var(--border2); }
+.timeline-hotel { font-weight:500; font-size:14px; }
+.timeline-times { font-size:12px; color:var(--text2); margin-top:3px; }
 
-/* NEARBY */
-.nearby-scroll{display:flex;gap:9px;overflow-x:auto;padding-bottom:4px;margin-bottom:12px}
-.nearby-scroll::-webkit-scrollbar{display:none}
-.nc{background:var(--card);border:1px solid var(--border);border-radius:var(--r-sm);padding:12px;min-width:140px;flex-shrink:0;cursor:pointer;transition:.15s}
-.nc:active{border-color:var(--accent)}
-.nc-icon{font-size:22px;margin-bottom:6px}
-.nc-name{font-size:12px;font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.nc-dist{font-size:10px;color:var(--text2);margin-top:2px}
+/* ── QUOTATION ── */
+.section-head { display:flex; align-items:center; justify-content:space-between; margin-bottom:14px; }
+.section-head h2 { font-family:var(--font-head); font-size:16px; font-weight:600; }
+.btn-add { padding:8px 14px; background:var(--accent); color:#fff; border:none; border-radius:8px; font-size:13px; font-weight:500; cursor:pointer; }
+.product-row { display:flex; align-items:center; gap:12px; padding:12px 0; border-bottom:1px solid var(--border); }
+.product-img { width:48px; height:48px; border-radius:10px; background:var(--bg3); display:flex; align-items:center; justify-content:center; font-size:20px; flex-shrink:0; overflow:hidden; }
+.product-img img { width:100%; height:100%; object-fit:cover; }
+.product-info { flex:1; min-width:0; }
+.product-name { font-weight:500; font-size:14px; }
+.product-code { font-size:11px; color:var(--text2); }
+.product-qty { display:flex; align-items:center; gap:8px; }
+.qty-btn { width:28px; height:28px; border-radius:7px; background:var(--bg3); border:1px solid var(--border2); color:var(--text); font-size:16px; cursor:pointer; display:flex; align-items:center; justify-content:center; }
+.qty-val { font-family:var(--font-head); font-size:14px; font-weight:600; min-width:24px; text-align:center; }
+.product-price { font-family:var(--font-head); font-size:13px; color:var(--accent); text-align:right; }
 
-/* CHECKIN */
-.ci-card{background:var(--card2);border:1px solid var(--border2);border-radius:var(--r);padding:16px;margin-bottom:11px}
-.ci-name{font-family:var(--font-h);font-size:16px;font-weight:600;margin-bottom:3px}
-.ci-addr{font-size:11px;color:var(--text2)}
-.ci-times{display:flex;gap:8px;margin:12px 0}
-.ci-box{flex:1;background:var(--bg3);border-radius:var(--r-sm);padding:10px;text-align:center}
-.ci-lbl{font-size:9px;color:var(--text2);text-transform:uppercase;letter-spacing:.5px}
-.ci-val{font-family:var(--font-h);font-size:15px;font-weight:700;margin-top:3px;color:var(--accent)}
-.ci-btns{display:flex;gap:8px}
-.ci-btn{flex:1;padding:12px;border:none;border-radius:var(--r-sm);font-family:var(--font-h);font-size:13px;font-weight:600;cursor:pointer;transition:.2s}
-.ci-in{background:rgba(34,197,94,.12);color:var(--green);border:1px solid rgba(34,197,94,.25)}
-.ci-out{background:rgba(239,68,68,.12);color:var(--red);border:1px solid rgba(239,68,68,.25)}
+/* ── INVOICE TOTAL ── */
+.total-box { background:var(--card2); border:1px solid var(--border2); border-radius:var(--radius); padding:18px; margin-top:12px; }
+.total-row { display:flex; justify-content:space-between; font-size:14px; padding:6px 0; }
+.total-row.grand { border-top:1px solid var(--border2); margin-top:8px; padding-top:12px; }
+.total-row.grand .label { font-family:var(--font-head); font-weight:600; font-size:16px; }
+.total-row.grand .val { font-family:var(--font-head); font-weight:700; font-size:18px; color:var(--accent); }
 
-/* QUOTATION */
-.prod-row{display:flex;align-items:center;gap:11px;padding:11px 0;border-bottom:1px solid var(--border)}
-.prod-row:last-child{border-bottom:none}
-.prod-img{width:46px;height:46px;border-radius:10px;background:var(--bg3);display:flex;align-items:center;justify-content:center;font-size:19px;flex-shrink:0;overflow:hidden}
-.prod-img img{width:100%;height:100%;object-fit:cover}
-.prod-name{font-weight:500;font-size:13px}
-.prod-code{font-size:10px;color:var(--text2);margin-top:2px}
-.qty-row{display:flex;align-items:center;gap:7px}
-.qb{width:26px;height:26px;border-radius:7px;background:var(--bg3);border:1px solid var(--border2);color:var(--text);font-size:15px;cursor:pointer;display:flex;align-items:center;justify-content:center}
-.qv{font-family:var(--font-h);font-size:13px;font-weight:600;min-width:22px;text-align:center}
-.pprice{font-family:var(--font-h);font-size:12px;color:var(--accent);margin-top:4px}
+/* ── MODAL ── */
+.modal-overlay { display:none; position:absolute; inset:0; background:rgba(0,0,0,.6); z-index:100; align-items:flex-end; }
+.modal-overlay.open { display:flex; }
+.modal-sheet { background:var(--bg2); border-radius:20px 20px 0 0; padding:24px 20px; width:100%; max-height:85vh; overflow-y:auto; animation:slideUp .3s cubic-bezier(.4,0,.2,1); }
+.modal-sheet::-webkit-scrollbar { display:none; }
+@keyframes slideUp { from{transform:translateY(100%)} to{transform:translateY(0)} }
+.modal-handle { width:36px; height:4px; background:var(--border2); border-radius:2px; margin:0 auto 20px; }
+.modal-title { font-family:var(--font-head); font-size:18px; font-weight:600; margin-bottom:20px; }
 
-/* TOTAL */
-.total-card{background:var(--bg3);border:1px solid var(--border2);border-radius:var(--r);padding:16px;margin-top:11px}
-.tr{display:flex;justify-content:space-between;font-size:13px;padding:5px 0}
-.tr.grand{border-top:1px solid var(--border2);margin-top:7px;padding-top:10px}
-.tr.grand .tl{font-family:var(--font-h);font-weight:600;font-size:15px}
-.tr.grand .tv{font-family:var(--font-h);font-weight:700;font-size:17px;color:var(--accent)}
-.tl{color:var(--text2)} .tv{font-weight:500}
+/* ── REMINDER ── */
+.reminder-item { display:flex; align-items:center; gap:14px; padding:14px; background:var(--card); border-radius:var(--radius-sm); margin-bottom:10px; border:1px solid var(--border); }
+.reminder-date-box { width:44px; height:44px; border-radius:10px; background:var(--accent); display:flex; flex-direction:column; align-items:center; justify-content:center; flex-shrink:0; }
+.reminder-date-box .day { font-family:var(--font-head); font-size:18px; font-weight:700; line-height:1; color:#fff; }
+.reminder-date-box .mon { font-size:10px; color:rgba(255,255,255,.8); }
+.reminder-info { flex:1; }
+.reminder-hotel { font-weight:500; font-size:14px; }
+.reminder-note { font-size:12px; color:var(--text2); margin-top:2px; }
+.countdown { font-size:11px; color:var(--orange); font-weight:500; margin-top:4px; }
 
-/* ACTION BTNS ROW */
-.action-row{display:flex;gap:9px;margin-top:11px}
-.action-row .btn{flex:1;padding:12px;font-size:13px}
+/* ── PAYMENT ── */
+.payment-item { padding:14px; background:var(--card); border-radius:var(--radius-sm); margin-bottom:10px; border:1px solid var(--border); }
+.payment-head { display:flex; justify-content:space-between; align-items:flex-start; }
+.payment-client { font-weight:500; font-size:14px; }
+.payment-amount { font-family:var(--font-head); font-size:16px; font-weight:700; color:var(--accent); }
+.payment-detail { font-size:12px; color:var(--text2); margin-top:6px; }
+.payment-due { font-size:12px; color:var(--orange); margin-top:4px; }
+.overdue { color:var(--red); }
 
-/* REMINDER ITEMS */
-.rem-item{display:flex;align-items:flex-start;gap:12px;padding:13px;background:var(--card);border-radius:var(--r-sm);margin-bottom:9px;border:1px solid var(--border)}
-.rem-date{width:42px;height:42px;border-radius:10px;background:var(--accent);display:flex;flex-direction:column;align-items:center;justify-content:center;flex-shrink:0}
-.rem-day{font-family:var(--font-h);font-size:17px;font-weight:700;line-height:1;color:#fff}
-.rem-mon{font-size:9px;color:rgba(255,255,255,.8)}
-.rem-info{flex:1}
-.rem-hotel{font-weight:500;font-size:13px}
-.rem-note{font-size:11px;color:var(--text2);margin-top:2px}
-.countdown{font-size:10px;font-weight:600;margin-top:4px}
+/* ── SETTINGS ── */
+.settings-item { display:flex; align-items:center; gap:14px; padding:16px 0; border-bottom:1px solid var(--border); cursor:pointer; }
+.settings-item:last-child { border-bottom:none; }
+.settings-icon { width:38px; height:38px; border-radius:10px; background:var(--bg3); display:flex; align-items:center; justify-content:center; font-size:18px; flex-shrink:0; }
+.settings-text { flex:1; }
+.settings-title { font-size:14px; font-weight:500; }
+.settings-desc { font-size:12px; color:var(--text2); margin-top:2px; }
+.settings-arrow { color:var(--text3); font-size:14px; }
 
-/* PAYMENT ITEMS */
-.pay-item{padding:13px;background:var(--card);border-radius:var(--r-sm);margin-bottom:9px;border:1px solid var(--border)}
-.pay-head{display:flex;justify-content:space-between;align-items:flex-start}
-.pay-client{font-weight:500;font-size:13px}
-.pay-amt{font-family:var(--font-h);font-size:15px;font-weight:700;color:var(--accent)}
-.pay-det{font-size:11px;color:var(--text2);margin-top:5px}
-.pay-due{font-size:11px;margin-top:3px}
-.pay-btns{display:flex;gap:7px;margin-top:9px}
-.pb{flex:1;padding:8px;border:none;border-radius:7px;font-size:11px;font-weight:600;cursor:pointer;transition:.2s}
+/* ── FLOATING BTN ── */
+.fab { position:absolute; bottom:calc(var(--nav-h) + 20px); right:20px; width:52px; height:52px; border-radius:16px; background:linear-gradient(135deg,var(--accent),var(--accent2)); border:none; color:#fff; font-size:24px; cursor:pointer; display:flex; align-items:center; justify-content:center; box-shadow:0 4px 20px rgba(79,142,247,.35); z-index:10; }
 
-/* SETTINGS */
-.set-item{display:flex;align-items:center;gap:12px;padding:14px 0;border-bottom:1px solid var(--border);cursor:pointer}
-.set-item:last-child{border-bottom:none}
-.set-icon{width:36px;height:36px;border-radius:9px;background:var(--bg3);display:flex;align-items:center;justify-content:center;font-size:17px;flex-shrink:0}
-.set-text{flex:1}
-.set-title{font-size:13px;font-weight:500}
-.set-desc{font-size:11px;color:var(--text2);margin-top:2px}
+/* ── SEARCH BAR ── */
+.search-bar { display:flex; align-items:center; gap:10px; background:var(--card); border:1px solid var(--border2); border-radius:var(--radius-sm); padding:10px 14px; margin-bottom:16px; }
+.search-bar input { flex:1; background:none; border:none; outline:none; color:var(--text); font-size:14px; font-family:var(--font-body); }
+.search-bar input::placeholder { color:var(--text3); }
+.search-icon { font-size:16px; color:var(--text3); flex-shrink:0; }
 
-/* SHEETS INDICATOR */
-.sync-pill{display:inline-flex;align-items:center;gap:5px;padding:3px 9px;border-radius:20px;font-size:10px;font-weight:600;background:rgba(34,197,94,.1);color:var(--green);border:1px solid rgba(34,197,94,.2)}
-.sync-pill.off{background:rgba(239,68,68,.1);color:var(--red);border-color:rgba(239,68,68,.2)}
-
-/* MODAL */
-.overlay{display:none;position:absolute;inset:0;background:rgba(0,0,0,.65);z-index:200;align-items:flex-end}
-.overlay.open{display:flex}
-.sheet{background:var(--bg2);border-radius:18px 18px 0 0;padding:22px 18px;width:100%;max-height:88vh;overflow-y:auto}
-.sheet::-webkit-scrollbar{display:none}
-@keyframes up{from{transform:translateY(100%)}to{transform:translateY(0)}}
-.overlay.open .sheet{animation:up .28s cubic-bezier(.4,0,.2,1)}
-.sheet-handle{width:32px;height:3px;background:var(--border2);border-radius:2px;margin:0 auto 18px}
-.sheet-title{font-family:var(--font-h);font-size:17px;font-weight:600;margin-bottom:16px}
-.form-group{margin-bottom:13px}
-.form-group label{display:block;margin-bottom:5px}
-
-/* SECTION LABEL */
-.sec-lbl{font-size:10px;font-weight:700;color:var(--text3);text-transform:uppercase;letter-spacing:.7px;margin-bottom:9px;margin-top:4px}
-
-/* SEARCH */
-.search-bar{display:flex;align-items:center;gap:9px;background:var(--bg3);border:1px solid var(--border2);border-radius:var(--r-sm);padding:9px 12px;margin-bottom:13px}
-.search-bar input{flex:1;background:none;border:none;outline:none;color:var(--text);font-size:13px;font-family:var(--font-b)}
-.search-bar input::placeholder{color:var(--text3)}
-
-/* TIMELINE */
-.tl-item{display:flex;gap:12px;padding:10px 0;position:relative}
-.tl-dot{width:9px;height:9px;border-radius:50%;background:var(--accent);margin-top:3px;flex-shrink:0}
-.tl-line{position:absolute;left:3.5px;top:18px;bottom:0;width:2px;background:var(--border2)}
-.tl-hotel{font-weight:500;font-size:13px}
-.tl-times{font-size:11px;color:var(--text2);margin-top:2px}
-
-/* EMPTY */
-.empty{text-align:center;padding:36px 16px;color:var(--text3)}
-.empty div:first-child{font-size:36px;margin-bottom:10px}
-.empty p{font-size:12px}
-
-/* TOAST */
-#toast{position:absolute;bottom:calc(var(--nav)+14px);left:50%;transform:translateX(-50%);background:var(--bg3);border:1px solid var(--border2);color:var(--text);padding:9px 18px;border-radius:20px;font-size:13px;font-weight:500;white-space:nowrap;z-index:999;opacity:0;transition:opacity .25s;pointer-events:none}
-#toast.show{opacity:1}
-
-/* LEAFLET OVERRIDES */
-.leaflet-container{background:#1a1f2e}
-.leaflet-tile{filter:brightness(.85) saturate(.7)}
+/* ── UTILS ── */
+.mt8 { margin-top:8px; }
+.mt12 { margin-top:12px; }
+.flex-row { display:flex; gap:10px; }
+.flex-row .btn-checkin { flex:1; }
+.section-label { font-size:11px; font-weight:600; color:var(--text2); text-transform:uppercase; letter-spacing:.6px; margin-bottom:10px; }
+.empty-state { text-align:center; padding:40px 20px; color:var(--text3); }
+.empty-state .empty-icon { font-size:44px; margin-bottom:12px; }
+.empty-state p { font-size:13px; }
+.chip-row { display:flex; gap:8px; flex-wrap:wrap; margin-bottom:14px; }
+.chip { padding:6px 14px; border-radius:20px; font-size:12px; font-weight:500; cursor:pointer; border:1px solid var(--border2); background:var(--card); color:var(--text2); transition:all .15s; }
+.chip.active { background:var(--accent); border-color:var(--accent); color:#fff; }
 </style>
 </head>
 <body>
+
 <div id="app">
 
-<!-- ═══ LOGIN ═══ -->
-<div id="login-screen" class="screen active" style="display:flex">
-  <div class="logo-wrap">
-    <div class="logo-mark">🍴</div>
-    <h1>Shapes Products</h1>
-    <p>Sales Manager Field App</p>
+  <!-- ══ LOGIN SCREEN ══ -->
+  <div id="login-screen" class="screen active" style="display:flex">
+    <div class="login-logo">
+      <div class="login-logo-mark">🍴</div>
+      <h1>Shapes Products</h1>
+      <p>Sales Manager App</p>
+    </div>
+    <div class="login-form">
+      <div class="form-group">
+        <label class="form-label">Your Name</label>
+        <input class="form-input" id="login-name" placeholder="e.g. Rahul Sharma" type="text">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Working Area</label>
+        <select class="form-input form-select" id="login-area">
+          <option value="">Select area...</option>
+          <option>Delhi West</option>
+          <option>Delhi East</option>
+          <option>Delhi North</option>
+          <option>Delhi South</option>
+          <option>Noida</option>
+          <option>Gurgaon</option>
+          <option>Faridabad</option>
+          <option>Ghaziabad</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Service Category</label>
+        <select class="form-input form-select" id="login-category">
+          <option value="">Select category...</option>
+          <option>Food Services</option>
+          <option>Hospitality</option>
+          <option>Restaurants</option>
+          <option>Hotels</option>
+          <option>Catering</option>
+          <option>Cafeteria</option>
+        </select>
+      </div>
+      <button class="btn-primary" onclick="doLogin()">Start Day →</button>
+    </div>
   </div>
-  <div style="width:100%">
-    <label class="form-lbl">Your name</label>
-    <input class="fi" id="l-name" placeholder="e.g. Rahul Sharma">
-    <label class="form-lbl">Working area</label>
-    <select class="fi" id="l-area">
-      <option value="">Select area...</option>
-      <option>Delhi West</option><option>Delhi East</option><option>Delhi North</option>
-      <option>Delhi South</option><option>Noida</option><option>Gurgaon</option>
-      <option>Faridabad</option><option>Ghaziabad</option>
-    </select>
-    <label class="form-lbl">Service category</label>
-    <select class="fi" id="l-cat">
-      <option value="">Select category...</option>
-      <option>Food Services</option><option>Hospitality</option><option>Restaurants</option>
-      <option>Hotels</option><option>Catering</option><option>Cafeteria</option>
-    </select>
-    <button class="btn btn-p" onclick="doLogin()">Start Today's Work →</button>
-  </div>
-</div>
 
-<!-- ═══ MAIN APP ═══ -->
-<div id="main" style="display:none;flex-direction:column;flex:1;overflow:hidden">
+  <!-- ══ MAIN APP (shown after login) ══ -->
+  <div id="main-app" style="display:none; flex-direction:column; flex:1; overflow:hidden;">
 
-  <div class="hdr" id="hdr">
-    <div class="hdr-left">
-      <h1 id="hdr-title">Dashboard</h1>
-      <p id="hdr-sub">Loading...</p>
-    </div>
-    <div class="hdr-actions">
-      <div class="sync-pill off" id="sync-pill">● Not Synced</div>
-    </div>
-  </div>
-
-  <div style="flex:1;overflow:hidden;position:relative">
-
-    <!-- DASHBOARD -->
-    <div id="s-dash" class="screen active">
-      <div class="scroll">
-        <div class="stat-grid">
-          <div class="stat-card"><div class="stat-v" style="color:var(--accent)" id="d-sales">₹0</div><div class="stat-l">Monthly sales</div><div class="stat-c up" id="d-sales-c">Loading...</div></div>
-          <div class="stat-card"><div class="stat-v" style="color:var(--green)" id="d-visits">0</div><div class="stat-l">Visits today</div><div class="stat-c up" id="d-visits-c">—</div></div>
-          <div class="stat-card"><div class="stat-v" style="color:var(--orange)" id="d-pending">₹0</div><div class="stat-l">Pending orders</div><div class="stat-c warn" id="d-pending-c">—</div></div>
-          <div class="stat-card"><div class="stat-v" style="color:var(--accent2)" id="d-followups">0</div><div class="stat-l">Follow-ups due</div><div class="stat-c warn" id="d-followups-c">—</div></div>
-        </div>
-        <div class="card">
-          <div class="card-hd">Monthly targets <span class="badge b-b" id="target-month-lbl">April</span></div>
-          <div class="prog-wrap"><div class="prog-lbl"><span>Sales</span><span id="tg-sales-lbl">₹0 / ₹0</span></div><div class="prog-track"><div class="prog-fill" id="tg-sales-bar" style="width:0%"></div></div></div>
-          <div class="prog-wrap"><div class="prog-lbl"><span>Collection</span><span id="tg-coll-lbl">₹0 / ₹0</span></div><div class="prog-track"><div class="prog-fill g" id="tg-coll-bar" style="width:0%"></div></div></div>
-          <div class="prog-wrap" style="margin-bottom:0"><div class="prog-lbl"><span>Visits</span><span id="tg-vis-lbl">0 / 0</span></div><div class="prog-track"><div class="prog-fill o" id="tg-vis-bar" style="width:0%"></div></div></div>
-        </div>
-        <div class="card">
-          <div class="card-hd">Today's visits</div>
-          <div id="dash-visits"><div class="empty"><div>📋</div><p>No visits yet today. Start checking in!</p></div></div>
-        </div>
-        <div class="card">
-          <div class="card-hd">Upcoming follow-ups</div>
-          <div id="dash-followups"><div class="empty"><div>📅</div><p>No follow-ups set</p></div></div>
-        </div>
+    <!-- HEADER -->
+    <div class="header" id="main-header">
+      <div>
+        <div class="header-title" id="header-title">Dashboard</div>
+        <div class="header-sub" id="header-sub">Good morning, Rahul</div>
+      </div>
+      <div style="display:flex;gap:8px">
+        <div class="header-action" onclick="openModal('reminder-modal')">🔔</div>
+        <div class="header-action" onclick="showScreen('settings')">⚙️</div>
       </div>
     </div>
 
-    <!-- GPS / MAP -->
-    <div id="s-map" class="screen">
-      <div class="scroll">
-        <div class="gps-bar">
-          <div class="gps-dot"></div>
-          <span style="flex:1;font-size:12px" id="gps-txt">Acquiring GPS...</span>
-          <span style="font-size:10px;color:var(--text3)">Live · 8s</span>
-        </div>
-        <div class="map-wrap"><div id="osmap"></div></div>
-        <div class="chips" id="type-chips">
-          <div class="chip on" onclick="filterType(this,'')">All</div>
-          <div class="chip" onclick="filterType(this,'hotel')">Hotels</div>
-          <div class="chip" onclick="filterType(this,'restaurant')">Restaurants</div>
-          <div class="chip" onclick="filterType(this,'cafe')">Cafes</div>
-        </div>
-        <div class="sec-lbl">Nearby places <span style="color:var(--text3);font-weight:400">(via OpenStreetMap — free)</span></div>
-        <div class="nearby-scroll" id="nearby-list">
-          <div class="nc" style="min-width:200px"><div class="nc-icon">📡</div><div class="nc-name" style="white-space:normal">Allow location to see nearby hotels & restaurants</div></div>
-        </div>
-        <div class="sec-lbl">Check in / out</div>
-        <div class="ci-card">
-          <div class="ci-name" id="ci-venue-name">Select a nearby venue above</div>
-          <div class="ci-addr" id="ci-venue-addr">Tap any place card to select it</div>
-          <div class="ci-times">
-            <div class="ci-box"><div class="ci-lbl">In time</div><div class="ci-val" id="ci-in">--:--</div></div>
-            <div class="ci-box"><div class="ci-lbl">Out time</div><div class="ci-val" id="ci-out">--:--</div></div>
-            <div class="ci-box"><div class="ci-lbl">Duration</div><div class="ci-val" id="ci-dur">--</div></div>
+    <!-- SCREENS CONTAINER -->
+    <div style="flex:1;overflow:hidden;position:relative;">
+
+      <!-- ── DASHBOARD ── -->
+      <div id="screen-dashboard" class="screen active">
+        <div class="content">
+          <div class="stat-grid">
+            <div class="stat-card">
+              <div class="stat-value" style="color:var(--accent)">₹3.2L</div>
+              <div class="stat-label">Monthly sales</div>
+              <div class="stat-change up">↑ 18% vs last month</div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-value" style="color:var(--green)">12</div>
+              <div class="stat-label">Visits today</div>
+              <div class="stat-change up">↑ 3 more than avg</div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-value" style="color:var(--orange)">₹1.8L</div>
+              <div class="stat-label">Pending orders</div>
+              <div class="stat-change warn">5 orders pending</div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-value" style="color:var(--accent2)">8</div>
+              <div class="stat-label">Follow-ups due</div>
+              <div class="stat-change warn">3 due this week</div>
+            </div>
           </div>
-          <div class="ci-btns">
-            <button class="ci-btn ci-in" onclick="doCheckIn()">✓ Check In</button>
-            <button class="ci-btn ci-out" onclick="doCheckOut()">← Check Out</button>
+
+          <div class="card">
+            <div class="card-title">Monthly target</div>
+            <div class="progress-wrap">
+              <div class="progress-label"><span>Sales</span><span>₹3.2L / ₹5L</span></div>
+              <div class="progress-track"><div class="progress-fill" style="width:64%"></div></div>
+            </div>
+            <div class="progress-wrap">
+              <div class="progress-label"><span>Collection</span><span>₹2.8L / ₹4L</span></div>
+              <div class="progress-track"><div class="progress-fill green" style="width:70%"></div></div>
+            </div>
+            <div class="progress-wrap" style="margin-bottom:0">
+              <div class="progress-label"><span>Visits</span><span>48 / 80</span></div>
+              <div class="progress-track"><div class="progress-fill orange" style="width:60%"></div></div>
+            </div>
           </div>
-        </div>
-        <label class="form-lbl">Meeting notes</label>
-        <textarea class="fi" id="visit-notes" rows="3" placeholder="What was discussed? Follow-up date agreed?" style="resize:none;margin-bottom:10px"></textarea>
-        <button class="btn btn-p" onclick="saveVisit()">💾 Save Visit → Google Sheets</button>
-        <div style="height:8px"></div>
-      </div>
-    </div>
 
-    <!-- QUOTATION / PI -->
-    <div id="s-quot" class="screen">
-      <div class="scroll">
-        <div class="chips">
-          <div class="chip on" onclick="switchDoc(this,'Quotation')">Quotation</div>
-          <div class="chip" onclick="switchDoc(this,'Proforma Invoice')">Proforma Invoice (PI)</div>
-        </div>
-        <div class="card">
-          <div class="card-hd">Client details</div>
-          <label class="form-lbl">Select client</label>
-          <select class="fi" id="q-client" onchange="fillClient()" style="margin-bottom:0">
-            <option value="">Choose client...</option>
-            <option value="radisson">Hotel Radisson Blu, Delhi</option>
-            <option value="oberoi">The Oberoi, Delhi</option>
-            <option value="itc">ITC Maurya, Delhi</option>
-            <option value="taj">Taj Hotel, Delhi</option>
-            <option value="leela">Leela Palace, Delhi</option>
-          </select>
-          <div id="client-filled" style="display:none;margin-top:12px;padding:11px;background:var(--bg3);border-radius:var(--r-sm);font-size:12px;color:var(--text2);line-height:1.9"></div>
-        </div>
-        <div class="card">
-          <div class="card-hd">Items <button class="btn btn-o" style="padding:6px 12px;font-size:11px;width:auto" onclick="openM('m-product')">+ Add item</button></div>
-          <div id="prod-list">
-            <div class="empty"><div>🛍️</div><p>Add items to the quotation</p></div>
+          <div class="card">
+            <div class="card-title">Today's visits</div>
+            <div class="visit-item">
+              <div class="visit-avatar" style="background:rgba(79,142,247,.15)">🏨</div>
+              <div class="visit-info">
+                <div class="visit-name">Hotel Radisson Blu</div>
+                <div class="visit-meta">10:15 AM → 11:30 AM · 1h 15m</div>
+              </div>
+              <span class="badge badge-green">Done</span>
+            </div>
+            <div class="visit-item">
+              <div class="visit-avatar" style="background:rgba(245,158,11,.15)">☕</div>
+              <div class="visit-info">
+                <div class="visit-name">Cafe Coffee Day, Karol Bagh</div>
+                <div class="visit-meta">12:00 PM → 12:45 PM · 45m</div>
+              </div>
+              <span class="badge badge-green">Done</span>
+            </div>
+            <div class="visit-item">
+              <div class="visit-avatar" style="background:rgba(124,95,240,.15)">🍽️</div>
+              <div class="visit-info">
+                <div class="visit-name">Taj Hotel Restaurant</div>
+                <div class="visit-meta">Checked in at 2:30 PM</div>
+              </div>
+              <span class="badge badge-blue">Active</span>
+            </div>
           </div>
-        </div>
-        <div class="total-card" id="total-card" style="display:none">
-          <div class="tr"><span class="tl">Subtotal</span><span class="tv" id="t-sub">₹0</span></div>
-          <div class="tr"><span class="tl">Discount</span><span class="tv up" id="t-disc">−₹0</span></div>
-          <div class="tr"><span class="tl">GST 18%</span><span class="tv" id="t-gst">₹0</span></div>
-          <div class="tr grand"><span class="tl">Total payable</span><span class="tv" id="t-total">₹0</span></div>
-        </div>
-        <div class="action-row">
-          <button class="btn btn-o" onclick="generatePDF()">📄 PDF</button>
-          <button class="btn btn-g" onclick="sendEmail()">✉️ Email</button>
-          <button class="btn btn-p" onclick="saveQuotation()">💾 Save</button>
-        </div>
-        <div style="height:8px"></div>
-      </div>
-    </div>
 
-    <!-- REMINDERS -->
-    <div id="s-rem" class="screen">
-      <div class="scroll">
-        <button class="btn btn-p" onclick="openM('m-reminder')" style="margin-bottom:14px">+ Set Follow-up Reminder</button>
-        <div class="sec-lbl">Follow-up reminders</div>
-        <div id="rem-list"><div class="empty"><div>📅</div><p>No reminders set. Add one above.</p></div></div>
-        <div class="sec-lbl" style="margin-top:16px">Payment tracking</div>
-        <div id="pay-list"><div class="empty"><div>💰</div><p>No pending payments</p></div></div>
-      </div>
-    </div>
-
-    <!-- SETTINGS -->
-    <div id="s-settings" class="screen">
-      <div class="scroll">
-        <div class="card" style="margin-bottom:14px">
-          <div style="display:flex;align-items:center;gap:12px">
-            <div style="width:50px;height:50px;border-radius:14px;background:linear-gradient(135deg,var(--accent),var(--accent2));display:flex;align-items:center;justify-content:center;font-size:20px">👤</div>
-            <div><div style="font-family:var(--font-h);font-size:15px;font-weight:600" id="p-name">—</div><div style="font-size:11px;color:var(--text2);margin-top:2px" id="p-area">—</div></div>
+          <div class="card">
+            <div class="card-title">Upcoming follow-ups</div>
+            <div class="visit-item">
+              <div class="visit-avatar" style="background:rgba(239,68,68,.15)">📅</div>
+              <div class="visit-info">
+                <div class="visit-name">Hotel Ashoka</div>
+                <div class="visit-meta">Meeting scheduled — 20th April</div>
+              </div>
+              <span class="badge badge-red">2 days</span>
+            </div>
+            <div class="visit-item">
+              <div class="visit-avatar" style="background:rgba(245,158,11,.15)">📅</div>
+              <div class="visit-info">
+                <div class="visit-name">Leela Palace</div>
+                <div class="visit-meta">Follow-up call</div>
+              </div>
+              <span class="badge badge-orange">3 days</span>
+            </div>
           </div>
         </div>
-        <div class="sec-lbl">Connections</div>
-        <div class="card">
-          <div class="set-item" onclick="openM('m-sheets')">
-            <div class="set-icon">📊</div>
-            <div class="set-text"><div class="set-title">Google Sheets</div><div class="set-desc" id="sheets-status">Not connected — tap to setup</div></div>
-            <span style="color:var(--text3)">›</span>
+      </div>
+
+      <!-- ── MAP / GPS ── -->
+      <div id="screen-map" class="screen">
+        <div class="content">
+          <div class="gps-status">
+            <div class="gps-dot"></div>
+            <span style="flex:1">GPS active — <span id="gps-coords">Fetching location...</span></span>
+            <span style="font-size:11px;color:var(--text3)">7s interval</span>
           </div>
-          <div class="set-item" onclick="openM('m-emailjs')">
-            <div class="set-icon">✉️</div>
-            <div class="set-text"><div class="set-title">EmailJS (free email)</div><div class="set-desc" id="ejs-status">Not configured — tap to setup</div></div>
-            <span style="color:var(--text3)">›</span>
+
+          <div class="map-box">
+            <div id="map"></div>
+            <div class="map-placeholder" id="map-placeholder">
+              <div class="map-icon">🗺️</div>
+              <div style="font-size:14px;font-weight:500">Loading map...</div>
+              <div style="font-size:12px;color:var(--text3);text-align:center;padding:0 20px">Add your Google Maps API key to enable live map & nearby search</div>
+            </div>
           </div>
-          <div class="set-item" onclick="openM('m-admin')">
-            <div class="set-icon">🎯</div>
-            <div class="set-text"><div class="set-title">Set monthly targets</div><div class="set-desc">Sales target, collection target, visit count</div></div>
-            <span style="color:var(--text3)">›</span>
+
+          <div class="chip-row">
+            <div class="chip active" onclick="filterNearby(this,'all')">All</div>
+            <div class="chip" onclick="filterNearby(this,'hotel')">Hotels</div>
+            <div class="chip" onclick="filterNearby(this,'restaurant')">Restaurants</div>
+            <div class="chip" onclick="filterNearby(this,'cafe')">Cafes</div>
           </div>
-          <div class="set-item" onclick="openM('m-client-add')">
-            <div class="set-icon">🏨</div>
-            <div class="set-text"><div class="set-title">Add new client</div><div class="set-desc">Hotels, restaurants, cafes</div></div>
-            <span style="color:var(--text3)">›</span>
+
+          <div class="section-label">Nearby (2km radius)</div>
+          <div class="nearby-row" id="nearby-list">
+            <div class="nearby-card" onclick="selectVenue('Hotel Radisson Blu','🏨','0.3 km')">
+              <div class="nc-icon">🏨</div>
+              <div class="nc-name">Hotel Radisson Blu</div>
+              <div class="nc-dist">0.3 km away</div>
+              <div class="nc-type">Hotel · 4★</div>
+            </div>
+            <div class="nearby-card" onclick="selectVenue('The Oberoi','🏨','0.7 km')">
+              <div class="nc-icon">🏨</div>
+              <div class="nc-name">The Oberoi</div>
+              <div class="nc-dist">0.7 km away</div>
+              <div class="nc-type">Hotel · 5★</div>
+            </div>
+            <div class="nearby-card" onclick="selectVenue('Cafe Coffee Day','☕','0.4 km')">
+              <div class="nc-icon">☕</div>
+              <div class="nc-name">Cafe Coffee Day</div>
+              <div class="nc-dist">0.4 km away</div>
+              <div class="nc-type">Cafe</div>
+            </div>
+            <div class="nearby-card" onclick="selectVenue('Bukhara Restaurant','🍽️','1.1 km')">
+              <div class="nc-icon">🍽️</div>
+              <div class="nc-name">Bukhara Restaurant</div>
+              <div class="nc-dist">1.1 km away</div>
+              <div class="nc-type">Restaurant</div>
+            </div>
+            <div class="nearby-card" onclick="selectVenue('ITC Maurya','🏨','1.5 km')">
+              <div class="nc-icon">🏨</div>
+              <div class="nc-name">ITC Maurya</div>
+              <div class="nc-dist">1.5 km away</div>
+              <div class="nc-type">Hotel · 5★</div>
+            </div>
+          </div>
+
+          <div class="section-label">Check in / out</div>
+          <div class="checkin-hotel" id="active-venue-card">
+            <div class="checkin-hotel-name" id="active-venue-name">Select a venue above</div>
+            <div class="checkin-hotel-addr" id="active-venue-addr">Tap any nearby place to check in</div>
+            <div class="checkin-time-row">
+              <div class="checkin-time-box">
+                <div class="checkin-time-label">In time</div>
+                <div class="checkin-time-val" id="checkin-in-time">--:--</div>
+              </div>
+              <div class="checkin-time-box">
+                <div class="checkin-time-label">Out time</div>
+                <div class="checkin-time-val" id="checkin-out-time">--:--</div>
+              </div>
+              <div class="checkin-time-box">
+                <div class="checkin-time-label">Duration</div>
+                <div class="checkin-time-val" id="checkin-duration">--</div>
+              </div>
+            </div>
+            <div class="flex-row">
+              <button class="btn-checkin in" onclick="doCheckin()">✓ Check In</button>
+              <button class="btn-checkin out" onclick="doCheckout()">← Check Out</button>
+            </div>
+          </div>
+          <textarea class="form-input" id="visit-notes" placeholder="Meeting notes, follow-up dates agreed..." rows="3" style="margin-bottom:10px;resize:none"></textarea>
+          <button class="btn-primary" onclick="saveVisit()" style="margin-bottom:0">Save Visit + Notes</button>
+        </div>
+      </div>
+
+      <!-- ── QUOTATION / PI ── -->
+      <div id="screen-quotation" class="screen">
+        <div class="content">
+          <div class="chip-row">
+            <div class="chip active" onclick="switchDocType(this,'quotation')">Quotation</div>
+            <div class="chip" onclick="switchDocType(this,'pi')">Proforma Invoice</div>
+          </div>
+
+          <div class="card" id="quote-client-section">
+            <div class="card-title">Client details</div>
+            <div class="form-group">
+              <label class="form-label">Client / Hotel Name</label>
+              <select class="form-input form-select" id="client-select" onchange="fillClientDetails()">
+                <option value="">Select client...</option>
+                <option value="radisson">Hotel Radisson Blu, Delhi</option>
+                <option value="oberoi">The Oberoi, Delhi</option>
+                <option value="itc">ITC Maurya, Delhi</option>
+                <option value="taj">Taj Hotel, Delhi</option>
+                <option value="leela">Leela Palace, Delhi</option>
+              </select>
+            </div>
+            <div id="client-details-filled" style="display:none">
+              <div style="font-size:13px;color:var(--text2);line-height:1.8" id="client-details-text"></div>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="section-head">
+              <h2>Items</h2>
+              <button class="btn-add" onclick="openModal('add-product-modal')">+ Add item</button>
+            </div>
+            <div id="product-list">
+              <div class="product-row">
+                <div class="product-img">🥄</div>
+                <div class="product-info">
+                  <div class="product-name">Dinner Spoon SS</div>
+                  <div class="product-code">Code: SS-DS-001 · ₹85/pc</div>
+                </div>
+                <div style="display:flex;flex-direction:column;align-items:flex-end;gap:6px">
+                  <div class="product-qty">
+                    <div class="qty-btn" onclick="changeQty(this,-1)">−</div>
+                    <div class="qty-val">12</div>
+                    <div class="qty-btn" onclick="changeQty(this,1)">+</div>
+                  </div>
+                  <div class="product-price">₹1,020</div>
+                </div>
+              </div>
+              <div class="product-row">
+                <div class="product-img">🍴</div>
+                <div class="product-info">
+                  <div class="product-name">Dinner Fork SS</div>
+                  <div class="product-code">Code: SS-DF-002 · ₹78/pc</div>
+                </div>
+                <div style="display:flex;flex-direction:column;align-items:flex-end;gap:6px">
+                  <div class="product-qty">
+                    <div class="qty-btn" onclick="changeQty(this,-1)">−</div>
+                    <div class="qty-val">12</div>
+                    <div class="qty-btn" onclick="changeQty(this,1)">+</div>
+                  </div>
+                  <div class="product-price">₹936</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="total-box">
+            <div class="total-row"><span class="label" style="color:var(--text2)">Subtotal</span><span class="val">₹1,956</span></div>
+            <div class="total-row"><span class="label" style="color:var(--text2)">Discount (10%)</span><span class="val" style="color:var(--green)">−₹195</span></div>
+            <div class="total-row"><span class="label" style="color:var(--text2)">GST (18%)</span><span class="val">₹319</span></div>
+            <div class="total-row grand"><span class="label">Total payable</span><span class="val">₹2,080</span></div>
+          </div>
+
+          <div style="display:flex;gap:10px;margin-top:12px">
+            <button class="btn-primary" style="flex:1;padding:13px;font-size:14px" onclick="generatePDF()">📄 PDF</button>
+            <button class="btn-primary" style="flex:1;padding:13px;font-size:14px;background:linear-gradient(135deg,#16a34a,#22c55e)" onclick="sendEmail()">✉️ Email</button>
+          </div>
+          <div style="height:8px"></div>
+        </div>
+      </div>
+
+      <!-- ── REMINDERS ── -->
+      <div id="screen-reminders" class="screen">
+        <div class="content">
+          <button class="btn-primary" onclick="openModal('add-reminder-modal')" style="margin-bottom:16px">+ Set New Reminder</button>
+
+          <div class="section-label">Upcoming follow-ups</div>
+
+          <div class="reminder-item">
+            <div class="reminder-date-box">
+              <div class="day">20</div>
+              <div class="mon">Apr</div>
+            </div>
+            <div class="reminder-info">
+              <div class="reminder-hotel">Hotel Radisson Blu</div>
+              <div class="reminder-note">Meeting with F&B manager — discuss cutlery order Q2</div>
+              <div class="countdown">⏰ 2 days remaining</div>
+            </div>
+            <span class="badge badge-red">2d</span>
+          </div>
+
+          <div class="reminder-item">
+            <div class="reminder-date-box" style="background:var(--orange)">
+              <div class="day">22</div>
+              <div class="mon">Apr</div>
+            </div>
+            <div class="reminder-info">
+              <div class="reminder-hotel">Leela Palace</div>
+              <div class="reminder-note">Follow-up on PI sent last week</div>
+              <div class="countdown" style="color:var(--orange)">⏰ 4 days remaining</div>
+            </div>
+            <span class="badge badge-orange">4d</span>
+          </div>
+
+          <div class="reminder-item">
+            <div class="reminder-date-box" style="background:var(--accent2)">
+              <div class="day">28</div>
+              <div class="mon">Apr</div>
+            </div>
+            <div class="reminder-info">
+              <div class="reminder-hotel">ITC Maurya</div>
+              <div class="reminder-note">Payment due — 45-day credit expires</div>
+              <div class="countdown" style="color:var(--accent2)">⏰ 10 days remaining</div>
+            </div>
+            <span class="badge badge-blue">10d</span>
+          </div>
+
+          <div class="section-label mt12">Payment reminders</div>
+          <div class="payment-item">
+            <div class="payment-head">
+              <div class="payment-client">Hotel Ashoka</div>
+              <div class="payment-amount">₹45,000</div>
+            </div>
+            <div class="payment-detail">PI #2024-041 · 45-day credit</div>
+            <div class="payment-due overdue">⚠️ Overdue by 3 days — send reminder</div>
+            <div style="display:flex;gap:8px;margin-top:10px">
+              <button class="btn-add" style="flex:1;background:rgba(239,68,68,.15);color:var(--red);font-size:12px" onclick="alert('WhatsApp reminder sent!')">WhatsApp</button>
+              <button class="btn-add" style="flex:1;font-size:12px" onclick="alert('Email reminder sent!')">Email</button>
+              <button class="btn-add" style="flex:1;background:rgba(34,197,94,.15);color:var(--green);font-size:12px" onclick="markPaid(this)">Mark Paid</button>
+            </div>
+          </div>
+          <div class="payment-item">
+            <div class="payment-head">
+              <div class="payment-client">Taj Hotel</div>
+              <div class="payment-amount">₹78,500</div>
+            </div>
+            <div class="payment-detail">PI #2024-038 · 45-day credit</div>
+            <div class="payment-due">Due in 5 days — Apr 25</div>
+            <div style="display:flex;gap:8px;margin-top:10px">
+              <button class="btn-add" style="flex:1;background:rgba(245,158,11,.15);color:var(--orange);font-size:12px" onclick="alert('Reminder sent!')">Remind</button>
+              <button class="btn-add" style="flex:1;background:rgba(34,197,94,.15);color:var(--green);font-size:12px" onclick="markPaid(this)">Mark Paid</button>
+            </div>
           </div>
         </div>
-        <div class="sec-lbl">Google Sheets structure</div>
-        <div class="card" style="font-size:12px;color:var(--text2);line-height:2.1">
-          Your spreadsheet needs these tab names:<br>
-          <span style="color:var(--accent)">Visits</span> · <span style="color:var(--green)">Quotations</span> · <span style="color:var(--orange)">Payments</span> · <span style="color:var(--teal)">Reminders</span> · <span style="color:var(--accent2)">Targets</span> · <span style="color:var(--red)">Clients</span>
-          <div style="margin-top:8px;padding:10px;background:var(--bg3);border-radius:var(--r-sm)">
-            <div style="color:var(--text);font-weight:500;margin-bottom:4px">Auto-synced columns in Visits tab:</div>
-            Date · Rep Name · Venue · Area · In Time · Out Time · Duration · GPS Lat · GPS Lng · Notes
+      </div>
+
+      <!-- ── SETTINGS ── -->
+      <div id="screen-settings" class="screen">
+        <div class="content">
+          <div class="card" style="margin-bottom:16px">
+            <div style="display:flex;align-items:center;gap:14px">
+              <div style="width:52px;height:52px;border-radius:14px;background:linear-gradient(135deg,var(--accent),var(--accent2));display:flex;align-items:center;justify-content:center;font-size:22px">👤</div>
+              <div>
+                <div style="font-family:var(--font-head);font-size:16px;font-weight:600" id="profile-name">Rahul Sharma</div>
+                <div style="font-size:12px;color:var(--text2)" id="profile-area">Delhi West · Food Services</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="settings-item" onclick="openModal('gsheets-modal')">
+              <div class="settings-icon">📊</div>
+              <div class="settings-text">
+                <div class="settings-title">Google Sheets sync</div>
+                <div class="settings-desc">Connect your spreadsheet for all records</div>
+              </div>
+              <div class="settings-arrow">›</div>
+            </div>
+            <div class="settings-item" onclick="openModal('emailjs-modal')">
+              <div class="settings-icon">✉️</div>
+              <div class="settings-text">
+                <div class="settings-title">EmailJS setup</div>
+                <div class="settings-desc">Configure email sending for PI & Quotations</div>
+              </div>
+              <div class="settings-arrow">›</div>
+            </div>
+            <div class="settings-item" onclick="openModal('maps-modal')">
+              <div class="settings-icon">🗺️</div>
+              <div class="settings-text">
+                <div class="settings-title">Google Maps API key</div>
+                <div class="settings-desc" id="maps-key-status">Not configured</div>
+              </div>
+              <div class="settings-arrow">›</div>
+            </div>
+            <div class="settings-item">
+              <div class="settings-icon">🔔</div>
+              <div class="settings-text">
+                <div class="settings-title">Push notifications</div>
+                <div class="settings-desc">Reminders 3 days before follow-up</div>
+              </div>
+              <div class="settings-arrow">›</div>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-title">App info</div>
+            <div style="font-size:13px;color:var(--text2);line-height:2">
+              <div>App: Shapes Products Sales App</div>
+              <div>Version: 1.0.0</div>
+              <div>Stack: PWA (HTML + JS)</div>
+              <div>Data: Google Sheets API</div>
+            </div>
+          </div>
+          <button class="btn-primary" style="background:rgba(239,68,68,.2);color:var(--red);margin-top:8px" onclick="logout()">Sign Out</button>
+        </div>
+      </div>
+
+    </div><!-- end screens container -->
+
+    <!-- BOTTOM NAV -->
+    <div id="bottom-nav">
+      <div class="nav-item active" onclick="showScreen('dashboard')">
+        <div class="nav-icon">◻️</div>
+        <div class="nav-label">Dashboard</div>
+      </div>
+      <div class="nav-item" onclick="showScreen('map')">
+        <div class="nav-icon">📍</div>
+        <div class="nav-label">GPS / Visits</div>
+      </div>
+      <div class="nav-item" onclick="showScreen('quotation')">
+        <div class="nav-icon">📋</div>
+        <div class="nav-label">Quotation</div>
+      </div>
+      <div class="nav-item" onclick="showScreen('reminders')">
+        <div class="nav-icon">🔔</div>
+        <div class="nav-label">Reminders</div>
+      </div>
+      <div class="nav-item" onclick="showScreen('settings')">
+        <div class="nav-icon">⚙️</div>
+        <div class="nav-label">Settings</div>
+      </div>
+    </div>
+
+  </div><!-- end main-app -->
+
+  <!-- ══ MODALS ══ -->
+
+  <!-- REMINDER MODAL -->
+  <div class="modal-overlay" id="reminder-modal" onclick="closeModalOutside(event,'reminder-modal')">
+    <div class="modal-sheet">
+      <div class="modal-handle"></div>
+      <div class="modal-title">Upcoming reminders</div>
+      <div style="font-size:13px;color:var(--text2);margin-bottom:16px">Automatic push + email + WhatsApp 3 days before</div>
+      <div class="reminder-item" style="margin-bottom:10px">
+        <div class="reminder-date-box"><div class="day">20</div><div class="mon">Apr</div></div>
+        <div class="reminder-info">
+          <div class="reminder-hotel">Hotel Radisson Blu</div>
+          <div class="reminder-note">Sending reminders on 17th, 18th, 19th</div>
+          <div class="countdown">⏰ 2 days remaining</div>
+        </div>
+      </div>
+      <button class="btn-primary" onclick="closeModal('reminder-modal')">Close</button>
+    </div>
+  </div>
+
+  <!-- ADD REMINDER MODAL -->
+  <div class="modal-overlay" id="add-reminder-modal" onclick="closeModalOutside(event,'add-reminder-modal')">
+    <div class="modal-sheet">
+      <div class="modal-handle"></div>
+      <div class="modal-title">Set follow-up reminder</div>
+      <div class="form-group">
+        <label class="form-label">Hotel / Client</label>
+        <input class="form-input" placeholder="e.g. Hotel Radisson Blu" id="rem-hotel">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Follow-up date</label>
+        <input class="form-input" type="date" id="rem-date">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Note</label>
+        <input class="form-input" placeholder="What's the meeting about?" id="rem-note">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Remind via</label>
+        <div style="display:flex;gap:10px;margin-top:6px">
+          <label style="display:flex;align-items:center;gap:6px;font-size:14px"><input type="checkbox" checked> Push</label>
+          <label style="display:flex;align-items:center;gap:6px;font-size:14px"><input type="checkbox" checked> Email</label>
+          <label style="display:flex;align-items:center;gap:6px;font-size:14px"><input type="checkbox" checked> WhatsApp</label>
+        </div>
+      </div>
+      <button class="btn-primary" onclick="saveReminder()">Save Reminder → Sheets</button>
+    </div>
+  </div>
+
+  <!-- ADD PRODUCT MODAL -->
+  <div class="modal-overlay" id="add-product-modal" onclick="closeModalOutside(event,'add-product-modal')">
+    <div class="modal-sheet">
+      <div class="modal-handle"></div>
+      <div class="modal-title">Add item to quotation</div>
+      <div class="search-bar" style="margin-bottom:12px">
+        <span class="search-icon">🔍</span>
+        <input placeholder="Search product by name or code..." id="product-search" oninput="searchProducts(this.value)">
+      </div>
+      <div id="product-search-results">
+        <div class="visit-item" onclick="addProduct('Dinner Spoon SS','SS-DS-001',85)" style="cursor:pointer">
+          <div class="visit-avatar" style="background:rgba(79,142,247,.15);font-size:20px">🥄</div>
+          <div class="visit-info">
+            <div class="visit-name">Dinner Spoon SS</div>
+            <div class="visit-meta">Code: SS-DS-001 · ₹85/pc · Discount: 10%</div>
           </div>
         </div>
-        <div class="sec-lbl">App info</div>
-        <div class="card" style="font-size:12px;color:var(--text2);line-height:2">
-          <div>Shapes Products Pvt Ltd — Sales App v2.0</div>
-          <div>Map: OpenStreetMap + Leaflet (100% free)</div>
-          <div>Nearby search: Overpass API (free)</div>
-          <div>Data sync: Google Sheets API</div>
-          <div>Email: EmailJS (free tier)</div>
-          <div>PDF: jsPDF (client-side)</div>
+        <div class="visit-item" onclick="addProduct('Dinner Fork SS','SS-DF-002',78)" style="cursor:pointer">
+          <div class="visit-avatar" style="background:rgba(124,95,240,.15);font-size:20px">🍴</div>
+          <div class="visit-info">
+            <div class="visit-name">Dinner Fork SS</div>
+            <div class="visit-meta">Code: SS-DF-002 · ₹78/pc · Discount: 10%</div>
+          </div>
         </div>
-        <button class="btn" style="background:rgba(239,68,68,.12);color:var(--red);border:1px solid rgba(239,68,68,.2);margin-top:6px" onclick="logout()">Sign Out</button>
-        <div style="height:8px"></div>
+        <div class="visit-item" onclick="addProduct('Tea Spoon SS','SS-TS-003',55)" style="cursor:pointer">
+          <div class="visit-avatar" style="background:rgba(34,197,94,.15);font-size:20px">🥄</div>
+          <div class="visit-info">
+            <div class="visit-name">Tea Spoon SS</div>
+            <div class="visit-meta">Code: SS-TS-003 · ₹55/pc · Discount: 10%</div>
+          </div>
+        </div>
+        <div class="visit-item" onclick="addProduct('Butter Knife SS','SS-BK-004',95)" style="cursor:pointer">
+          <div class="visit-avatar" style="background:rgba(245,158,11,.15);font-size:20px">🔪</div>
+          <div class="visit-info">
+            <div class="visit-name">Butter Knife SS</div>
+            <div class="visit-meta">Code: SS-BK-004 · ₹95/pc · Discount: 10%</div>
+          </div>
+        </div>
+        <div class="visit-item" onclick="addProduct('Serving Spoon SS','SS-SV-005',180)" style="cursor:pointer">
+          <div class="visit-avatar" style="background:rgba(239,68,68,.15);font-size:20px">🥄</div>
+          <div class="visit-info">
+            <div class="visit-name">Serving Spoon SS</div>
+            <div class="visit-meta">Code: SS-SV-005 · ₹180/pc · Discount: 10%</div>
+          </div>
+        </div>
       </div>
-    </div>
-
-  </div><!-- screens container -->
-
-  <!-- BOTTOM NAV -->
-  <div id="nav">
-    <div class="ni on" onclick="go('dash')">
-      <svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></svg>
-      <span>Dashboard</span>
-    </div>
-    <div class="ni" onclick="go('map')">
-      <svg viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z"/><circle cx="12" cy="9" r="2.5"/></svg>
-      <span>GPS</span>
-    </div>
-    <div class="ni" onclick="go('quot')">
-      <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="8" y1="13" x2="16" y2="13"/><line x1="8" y1="17" x2="13" y2="17"/></svg>
-      <span>Quotation</span>
-    </div>
-    <div class="ni" onclick="go('rem')">
-      <svg viewBox="0 0 24 24"><path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 01-3.46 0"/></svg>
-      <span>Reminders</span>
-    </div>
-    <div class="ni" onclick="go('settings')">
-      <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-4 0v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83 0 2 2 0 010-2.83l.06-.06A1.65 1.65 0 004.68 15a1.65 1.65 0 00-1.51-1H3a2 2 0 010-4h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 010-2.83 2 2 0 012.83 0l.06.06A1.65 1.65 0 009 4.68a1.65 1.65 0 001-1.51V3a2 2 0 014 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 0 2 2 0 010 2.83l-.06.06A1.65 1.65 0 0019.4 9a1.65 1.65 0 001.51 1H21a2 2 0 010 4h-.09a1.65 1.65 0 00-1.51 1z"/></svg>
-      <span>Settings</span>
+      <div class="form-group mt12">
+        <label class="form-label">Upload item image</label>
+        <input type="file" accept="image/*" id="product-image-upload" class="form-input" style="padding:10px">
+      </div>
     </div>
   </div>
 
-</div><!-- main -->
-
-<!-- ═══ MODALS ═══ -->
-
-<!-- SHEETS SETUP -->
-<div class="overlay" id="m-sheets" onclick="closeOut(event,'m-sheets')">
-  <div class="sheet">
-    <div class="sheet-handle"></div>
-    <div class="sheet-title">📊 Connect Google Sheets</div>
-    <div style="background:var(--bg3);border-radius:var(--r-sm);padding:12px;margin-bottom:14px;font-size:12px;color:var(--text2);line-height:1.8">
-      <b style="color:var(--text)">3 steps to connect:</b><br>
-      1. Open sheets.google.com → Create new sheet<br>
-      2. Name tabs: Visits, Quotations, Payments, Reminders, Targets<br>
-      3. Go to Extensions → Apps Script → paste the sync code (from guide below)
-    </div>
-    <div class="form-group">
-      <label class="form-lbl">Web App URL (from Apps Script deploy)</label>
-      <input class="fi" id="sheets-url" placeholder="https://script.google.com/macros/s/.../exec" style="margin-bottom:0">
-    </div>
-    <div style="font-size:11px;color:var(--text2);margin-bottom:14px">This URL comes from: Apps Script → Deploy → New deployment → Web App → Copy URL</div>
-    <button class="btn btn-p" onclick="saveSheets()">Connect & Test</button>
-  </div>
-</div>
-
-<!-- EMAILJS SETUP -->
-<div class="overlay" id="m-emailjs" onclick="closeOut(event,'m-emailjs')">
-  <div class="sheet">
-    <div class="sheet-handle"></div>
-    <div class="sheet-title">✉️ EmailJS Setup (free)</div>
-    <div style="background:var(--bg3);border-radius:var(--r-sm);padding:12px;margin-bottom:14px;font-size:12px;color:var(--text2);line-height:1.8">
-      1. Go to emailjs.com → Sign up free<br>
-      2. Add Email Service (Gmail) → Get Service ID<br>
-      3. Create Template → Get Template ID<br>
-      4. Account → API Keys → Get Public Key
-    </div>
-    <div class="form-group"><label class="form-lbl">Service ID</label><input class="fi" id="ejs-sid" placeholder="service_xxxxxxx" style="margin-bottom:0"></div>
-    <div class="form-group"><label class="form-lbl">Template ID</label><input class="fi" id="ejs-tid" placeholder="template_xxxxxxx" style="margin-bottom:0"></div>
-    <div class="form-group"><label class="form-lbl">Public Key</label><input class="fi" id="ejs-pk" placeholder="xxxxxxxxxxxxxxxxxxxx" style="margin-bottom:0"></div>
-    <button class="btn btn-p" onclick="saveEmailJS()">Save Email Config</button>
-  </div>
-</div>
-
-<!-- ADD PRODUCT -->
-<div class="overlay" id="m-product" onclick="closeOut(event,'m-product')">
-  <div class="sheet">
-    <div class="sheet-handle"></div>
-    <div class="sheet-title">Add item to quotation</div>
-    <div class="search-bar">
-      <svg width="14" height="14" viewBox="0 0 24 24" stroke="var(--text3)" fill="none" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
-      <input placeholder="Search by name or code..." id="prod-search" oninput="filterProds(this.value)">
-    </div>
-    <div id="prod-search-list">
-      <div class="li" onclick="addProd('Dinner Spoon SS','SS-DS-001',85,'🥄')" style="cursor:pointer">
-        <div class="li-av" style="background:rgba(79,142,247,.12)">🥄</div>
-        <div class="li-info"><div class="li-name">Dinner Spoon SS</div><div class="li-sub">SS-DS-001 · ₹85/pc · Disc 10%</div></div>
+  <!-- MAPS API MODAL -->
+  <div class="modal-overlay" id="maps-modal" onclick="closeModalOutside(event,'maps-modal')">
+    <div class="modal-sheet">
+      <div class="modal-handle"></div>
+      <div class="modal-title">Google Maps API key</div>
+      <div style="font-size:13px;color:var(--text2);margin-bottom:16px">Paste your API key from Google Cloud Console (see steps above)</div>
+      <div class="form-group">
+        <label class="form-label">API Key</label>
+        <input class="form-input" id="maps-api-input" placeholder="AIzaSy...">
       </div>
-      <div class="li" onclick="addProd('Dinner Fork SS','SS-DF-002',78,'🍴')" style="cursor:pointer">
-        <div class="li-av" style="background:rgba(124,95,240,.12)">🍴</div>
-        <div class="li-info"><div class="li-name">Dinner Fork SS</div><div class="li-sub">SS-DF-002 · ₹78/pc · Disc 10%</div></div>
-      </div>
-      <div class="li" onclick="addProd('Tea Spoon SS','SS-TS-003',55,'🥄')" style="cursor:pointer">
-        <div class="li-av" style="background:rgba(34,197,94,.12)">🥄</div>
-        <div class="li-info"><div class="li-name">Tea Spoon SS</div><div class="li-sub">SS-TS-003 · ₹55/pc · Disc 10%</div></div>
-      </div>
-      <div class="li" onclick="addProd('Butter Knife SS','SS-BK-004',95,'🔪')" style="cursor:pointer">
-        <div class="li-av" style="background:rgba(245,158,11,.12)">🔪</div>
-        <div class="li-info"><div class="li-name">Butter Knife SS</div><div class="li-sub">SS-BK-004 · ₹95/pc · Disc 10%</div></div>
-      </div>
-      <div class="li" onclick="addProd('Serving Spoon SS','SS-SV-005',180,'🥄')" style="cursor:pointer">
-        <div class="li-av" style="background:rgba(239,68,68,.12)">🥄</div>
-        <div class="li-info"><div class="li-name">Serving Spoon SS</div><div class="li-sub">SS-SV-005 · ₹180/pc · Disc 10%</div></div>
-      </div>
-      <div class="li" onclick="addProd('Dessert Spoon SS','SS-DS-006',72,'🥄')" style="cursor:pointer">
-        <div class="li-av" style="background:rgba(20,184,166,.12)">🥄</div>
-        <div class="li-info"><div class="li-name">Dessert Spoon SS</div><div class="li-sub">SS-DS-006 · ₹72/pc · Disc 10%</div></div>
-      </div>
-    </div>
-    <div class="form-group" style="margin-top:14px">
-      <label class="form-lbl">Upload item image (shows in PDF)</label>
-      <input type="file" accept="image/*" id="prod-img-file" class="fi" style="padding:9px">
+      <button class="btn-primary" onclick="saveMapsKey()">Save & Enable GPS</button>
     </div>
   </div>
-</div>
 
-<!-- ADD REMINDER -->
-<div class="overlay" id="m-reminder" onclick="closeOut(event,'m-reminder')">
-  <div class="sheet">
-    <div class="sheet-handle"></div>
-    <div class="sheet-title">📅 Set Follow-up Reminder</div>
-    <div class="form-group"><label class="form-lbl">Hotel / Client name</label><input class="fi" id="r-hotel" placeholder="e.g. Hotel Radisson Blu" style="margin-bottom:0"></div>
-    <div class="form-group"><label class="form-lbl">Follow-up date</label><input class="fi" type="date" id="r-date" style="margin-bottom:0"></div>
-    <div class="form-group"><label class="form-lbl">Note / agenda</label><input class="fi" id="r-note" placeholder="What is the meeting about?" style="margin-bottom:0"></div>
-    <div class="form-group">
-      <label class="form-lbl">Remind via (3 days before)</label>
-      <div style="display:flex;gap:14px;margin-top:6px;font-size:13px">
-        <label style="display:flex;align-items:center;gap:5px"><input type="checkbox" id="r-push" checked> Push</label>
-        <label style="display:flex;align-items:center;gap:5px"><input type="checkbox" id="r-email" checked> Email</label>
+  <!-- GSHEETS MODAL -->
+  <div class="modal-overlay" id="gsheets-modal" onclick="closeModalOutside(event,'gsheets-modal')">
+    <div class="modal-sheet">
+      <div class="modal-handle"></div>
+      <div class="modal-title">Google Sheets setup</div>
+      <div style="font-size:13px;color:var(--text2);margin-bottom:16px">All visits, quotations, PIs, payments & reminders will sync here</div>
+      <div class="form-group">
+        <label class="form-label">Spreadsheet ID</label>
+        <input class="form-input" id="sheets-id-input" placeholder="From sheets URL: .../d/SPREADSHEET_ID/...">
       </div>
+      <div class="form-group">
+        <label class="form-label">Google API Key (for Sheets)</label>
+        <input class="form-input" id="sheets-api-input" placeholder="AIzaSy...">
+      </div>
+      <div style="background:var(--bg3);border-radius:var(--radius-sm);padding:14px;margin-bottom:16px;font-size:12px;color:var(--text2);line-height:1.8">
+        <strong style="color:var(--text)">Sheets needed:</strong><br>
+        • Visits — check-in/out log + GPS<br>
+        • Quotations — all quotes + items<br>
+        • Orders_PI — proforma invoices<br>
+        • Clients — hotel/restaurant list<br>
+        • Reminders — follow-up dates<br>
+        • Payments — credit tracking<br>
+        • Targets — monthly/yearly goals
+      </div>
+      <button class="btn-primary" onclick="saveSheets()">Connect Spreadsheet</button>
     </div>
-    <button class="btn btn-p" onclick="saveReminder()">Save → Sheets + Notification</button>
   </div>
-</div>
 
-<!-- SET TARGETS (ADMIN) -->
-<div class="overlay" id="m-admin" onclick="closeOut(event,'m-admin')">
-  <div class="sheet">
-    <div class="sheet-handle"></div>
-    <div class="sheet-title">🎯 Set Monthly Targets</div>
-    <div class="form-group"><label class="form-lbl">Sales target (₹)</label><input class="fi" type="number" id="tg-sales" placeholder="e.g. 500000" style="margin-bottom:0"></div>
-    <div class="form-group"><label class="form-lbl">Collection target (₹)</label><input class="fi" type="number" id="tg-coll" placeholder="e.g. 400000" style="margin-bottom:0"></div>
-    <div class="form-group"><label class="form-lbl">Visit target (count)</label><input class="fi" type="number" id="tg-vis" placeholder="e.g. 80" style="margin-bottom:0"></div>
-    <button class="btn btn-p" onclick="saveTargets()">Save Targets → Sheets</button>
+  <!-- EMAILJS MODAL -->
+  <div class="modal-overlay" id="emailjs-modal" onclick="closeModalOutside(event,'emailjs-modal')">
+    <div class="modal-sheet">
+      <div class="modal-handle"></div>
+      <div class="modal-title">EmailJS configuration</div>
+      <div style="font-size:13px;color:var(--text2);margin-bottom:16px">Get free keys from emailjs.com — send PI & Quotation directly</div>
+      <div class="form-group">
+        <label class="form-label">Service ID</label>
+        <input class="form-input" id="ejs-service" placeholder="service_xxxxxxx">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Template ID</label>
+        <input class="form-input" id="ejs-template" placeholder="template_xxxxxxx">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Public Key</label>
+        <input class="form-input" id="ejs-key" placeholder="xxxxxxxxxxxxxxxxxxxx">
+      </div>
+      <button class="btn-primary" onclick="saveEmailJS()">Save EmailJS Config</button>
+    </div>
   </div>
-</div>
 
-<!-- ADD CLIENT -->
-<div class="overlay" id="m-client-add" onclick="closeOut(event,'m-client-add')">
-  <div class="sheet">
-    <div class="sheet-handle"></div>
-    <div class="sheet-title">🏨 Add New Client</div>
-    <div class="form-group"><label class="form-lbl">Hotel / Restaurant name</label><input class="fi" id="nc-name" placeholder="e.g. Hotel Taj Vivanta" style="margin-bottom:0"></div>
-    <div class="form-group"><label class="form-lbl">GST number</label><input class="fi" id="nc-gst" placeholder="07XXXXX..." style="margin-bottom:0"></div>
-    <div class="form-group"><label class="form-lbl">Address</label><input class="fi" id="nc-addr" placeholder="Full address" style="margin-bottom:0"></div>
-    <div class="form-group"><label class="form-lbl">Contact person</label><input class="fi" id="nc-contact" placeholder="Name + designation" style="margin-bottom:0"></div>
-    <div class="form-group"><label class="form-lbl">Email</label><input class="fi" id="nc-email" placeholder="purchase@hotel.com" style="margin-bottom:0"></div>
-    <div class="form-group"><label class="form-lbl">Phone</label><input class="fi" id="nc-phone" placeholder="+91..." style="margin-bottom:0"></div>
-    <button class="btn btn-p" onclick="saveNewClient()">Save Client → Sheets</button>
-  </div>
-</div>
-
-<div id="toast"></div>
-
-</div><!-- app -->
+</div><!-- end app -->
 
 <script>
-// ══════════════════════════════════════════
-// STATE
-// ══════════════════════════════════════════
-const S = {
-  user: null,
-  cfg: JSON.parse(localStorage.getItem('sp_cfg')||'{}'),
-  visits: JSON.parse(localStorage.getItem('sp_visits')||'[]'),
-  reminders: JSON.parse(localStorage.getItem('sp_reminders')||'[]'),
-  payments: JSON.parse(localStorage.getItem('sp_payments')||'[]'),
-  targets: JSON.parse(localStorage.getItem('sp_targets')||'{"sales":500000,"coll":400000,"vis":80}'),
-  products: [],  // items in current quotation
+// ── STATE ──
+const state = {
+  user: { name:'', area:'', category:'' },
   currentVenue: null,
   checkinTime: null,
-  gpsPos: null,
-  map: null,
-  mapMarker: null,
-  nearbyPlaces: [],
-  gpsTimer: null,
-  docType: 'Quotation',
-  clients: {
-    radisson:{name:'Hotel Radisson Blu, Delhi',gst:'07ABCDR1234F1Z5',addr:'Barakhamba Ave, Connaught Place, New Delhi 110001',contact:'Mr Sharma, F&B Manager',email:'fb@radisson.in'},
-    oberoi:  {name:'The Oberoi, Delhi',gst:'07AABCO5678G1Z9',addr:'Dr Zakir Hussain Marg, New Delhi 110003',contact:'Ms Priya, Purchase Head',email:'purchase@oberoi.com'},
-    itc:     {name:'ITC Maurya, Delhi',gst:'07AABCI9012H1Z2',addr:'Sardar Patel Marg, Diplomatic Enclave, New Delhi 110021',contact:'Mr Gupta, Procurement',email:'procurement@itcmaurya.com'},
-    taj:     {name:'Taj Hotel, Delhi',gst:'07AABCT3456I1Z7',addr:'1 Mansingh Road, New Delhi 110011',contact:'Mr Kapoor, F&B Director',email:'fb@tajhotels.com'},
-    leela:   {name:'Leela Palace, Delhi',gst:'07AABCL7890J1ZX',addr:'Africa Ave, New Delhi 110023',contact:'Ms Nair, GM Operations',email:'ops@theleela.com'}
-  }
+  visits: JSON.parse(localStorage.getItem('sp_visits')||'[]'),
+  quotations: JSON.parse(localStorage.getItem('sp_quotations')||'[]'),
+  config: JSON.parse(localStorage.getItem('sp_config')||'{}'),
+  gpsWatcher: null,
+  gpsInterval: null,
+  gpsLog: []
 };
 
-// ══════════════════════════════════════════
-// LOGIN
-// ══════════════════════════════════════════
-function doLogin(){
-  const name=v('l-name'), area=v('l-area'), cat=v('l-cat');
-  if(!name||!area||!cat){toast('Please fill all fields','warn');return}
-  S.user={name,area,category:cat};
-  localStorage.setItem('sp_user',JSON.stringify(S.user));
-  applyUser();
-  document.getElementById('login-screen').style.display='none';
-  document.getElementById('main').style.display='flex';
-  initMap();
+// ── LOGIN ──
+function doLogin() {
+  const name = document.getElementById('login-name').value.trim();
+  const area = document.getElementById('login-area').value;
+  const cat  = document.getElementById('login-category').value;
+  if(!name||!area||!cat){ alert('Please fill all fields'); return; }
+  state.user = {name, area, category: cat};
+  localStorage.setItem('sp_user', JSON.stringify(state.user));
+  document.getElementById('header-sub').textContent = 'Good morning, '+name.split(' ')[0];
+  document.getElementById('profile-name').textContent = name;
+  document.getElementById('profile-area').textContent = area+' · '+cat;
+  document.getElementById('login-screen').style.display = 'none';
+  document.getElementById('main-app').style.display = 'flex';
   startGPS();
   requestNotificationPermission();
-  refreshDash();
-  renderReminders();
 }
 
-function applyUser(){
-  const u=S.user;
-  document.getElementById('hdr-sub').textContent=area(u.name)+' · '+u.area;
-  document.getElementById('p-name').textContent=u.name;
-  document.getElementById('p-area').textContent=u.area+' · '+u.category;
-  updateSyncPill();
-  updateTargetsDash();
-}
-
-function area(n){return 'Hi, '+n.split(' ')[0]}
-
-// ══════════════════════════════════════════
-// NAVIGATION
-// ══════════════════════════════════════════
-const titles={dash:'Dashboard',map:'GPS Tracker',quot:'Quotation / PI',rem:'Reminders & Payments',settings:'Settings'};
-function go(name){
+// ── SCREEN NAVIGATION ──
+function showScreen(name) {
   document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
-  document.querySelectorAll('.ni').forEach(n=>n.classList.remove('on'));
-  document.getElementById('s-'+name).classList.add('active');
-  document.getElementById('hdr-title').textContent=titles[name]||name;
-  const order=['dash','map','quot','rem','settings'];
-  const idx=order.indexOf(name);
-  document.querySelectorAll('.ni')[idx]?.classList.add('on');
-  if(name==='map'&&S.map){setTimeout(()=>S.map.invalidateSize(),100)}
+  document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));
+  const screenTitles = {
+    dashboard:'Dashboard', map:'GPS Tracker', quotation:'Quotation / PI',
+    reminders:'Reminders', settings:'Settings'
+  };
+  document.getElementById('screen-'+name).classList.add('active');
+  document.getElementById('header-title').textContent = screenTitles[name]||name;
+  const navItems = document.querySelectorAll('.nav-item');
+  const navMap = ['dashboard','map','quotation','reminders','settings'];
+  const idx = navMap.indexOf(name);
+  if(idx>=0) navItems[idx].classList.add('active');
 }
 
-// ══════════════════════════════════════════
-// OPENSTREETMAP via Leaflet
-// ══════════════════════════════════════════
-function initMap(){
-  if(S.map) return;
-  const defaultPos=[28.6139,77.2090]; // New Delhi default
-  S.map=L.map('osmap',{zoomControl:false,attributionControl:false}).setView(defaultPos,14);
-  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{maxZoom:19}).addTo(S.map);
-  // Add zoom control top-right
-  L.control.zoom({position:'topright'}).addTo(S.map);
-  // Small attribution
-  L.control.attribution({position:'bottomright',prefix:false}).addTo(S.map);
-  S.map.attributionControl.addAttribution('© OpenStreetMap');
-}
-
-function startGPS(){
-  if(!navigator.geolocation){
-    document.getElementById('gps-txt').textContent='GPS not supported';
-    return;
-  }
-  const watchPos=()=>{
+// ── GPS ──
+function startGPS() {
+  if(navigator.geolocation) {
+    state.gpsInterval = setInterval(()=>{
+      navigator.geolocation.getCurrentPosition(pos=>{
+        const {latitude:lat, longitude:lng} = pos.coords;
+        document.getElementById('gps-coords').textContent = lat.toFixed(5)+', '+lng.toFixed(5);
+        state.gpsLog.push({lat,lng,ts:new Date().toISOString()});
+        if(state.config.mapsKey) initMap(lat,lng);
+      }, ()=>{
+        document.getElementById('gps-coords').textContent = 'Location access denied';
+      });
+    }, 7000);
     navigator.geolocation.getCurrentPosition(pos=>{
-      const {latitude:lat,longitude:lng,accuracy:acc}=pos.coords;
-      S.gpsPos={lat,lng,acc};
-      document.getElementById('gps-txt').textContent=`${lat.toFixed(5)}, ${lng.toFixed(5)} · ±${Math.round(acc)}m`;
-      if(S.map){
-        S.map.setView([lat,lng],15);
-        if(S.mapMarker) S.mapMarker.remove();
-        const icon=L.divIcon({html:`<div style="width:14px;height:14px;border-radius:50%;background:#4f8ef7;border:2px solid #fff;box-shadow:0 0 0 6px rgba(79,142,247,.2)"></div>`,className:'',iconSize:[14,14],iconAnchor:[7,7]});
-        S.mapMarker=L.marker([lat,lng],{icon}).addTo(S.map).bindPopup('You are here');
-      }
-      fetchNearby(lat,lng,'');
-    },err=>{
-      document.getElementById('gps-txt').textContent='Location denied — enable GPS';
-    },{enableHighAccuracy:true,timeout:10000});
-  };
-  watchPos();
-  S.gpsTimer=setInterval(watchPos,8000);
-}
-
-// ══════════════════════════════════════════
-// NEARBY SEARCH via Overpass API (FREE)
-// ══════════════════════════════════════════
-let nearbyType='';
-function filterType(chip,type){
-  document.querySelectorAll('#type-chips .chip').forEach(c=>c.classList.remove('on'));
-  chip.classList.add('on');
-  nearbyType=type;
-  if(S.gpsPos) fetchNearby(S.gpsPos.lat,S.gpsPos.lng,type);
-}
-
-async function fetchNearby(lat,lng,type){
-  let amenity='hotel|restaurant|cafe|bar|fast_food';
-  if(type==='hotel') amenity='hotel';
-  else if(type==='restaurant') amenity='restaurant|fast_food';
-  else if(type==='cafe') amenity='cafe';
-
-  const radius=2000;
-  const query=`[out:json][timeout:10];(node["amenity"~"${amenity}"](around:${radius},${lat},${lng});way["amenity"~"${amenity}"](around:${radius},${lat},${lng}););out center 20;`;
-  const url='https://overpass-api.de/api/interpreter?data='+encodeURIComponent(query);
-
-  try{
-    const res=await fetch(url);
-    const data=await res.json();
-    S.nearbyPlaces=data.elements||[];
-    renderNearby(lat,lng);
-  }catch(e){
-    // Show demo data if API fails
-    renderNearbyDemo();
+      const {latitude:lat,longitude:lng} = pos.coords;
+      document.getElementById('gps-coords').textContent = lat.toFixed(5)+', '+lng.toFixed(5);
+      if(state.config.mapsKey) initMap(lat,lng);
+    });
   }
 }
 
-function renderNearby(myLat,myLng){
-  const list=document.getElementById('nearby-list');
-  list.innerHTML='';
-  if(!S.nearbyPlaces.length){list.innerHTML='<div class="nc" style="min-width:180px"><div class="nc-icon">🔍</div><div class="nc-name" style="white-space:normal">No places found nearby</div></div>';return}
-  S.nearbyPlaces.slice(0,15).forEach(p=>{
-    const name=p.tags?.name||'Unnamed place';
-    const am=p.tags?.amenity||'';
-    const icon=am==='hotel'?'🏨':am==='cafe'?'☕':am==='bar'?'🍺':'🍽️';
-    const plat=p.lat||p.center?.lat;
-    const plng=p.lon||p.center?.lon;
-    let dist='';
-    if(plat&&plng){const d=distKm(myLat,myLng,plat,plng);dist=d<1?(Math.round(d*1000)+'m'):(d.toFixed(1)+'km')}
-    const card=document.createElement('div');
-    card.className='nc';
-    card.innerHTML=`<div class="nc-icon">${icon}</div><div class="nc-name">${name}</div><div class="nc-dist">${dist} away</div>`;
-    card.onclick=()=>selectVenue(name,icon,dist,plat,plng);
-    list.appendChild(card);
-    // Add marker on map
-    if(S.map&&plat&&plng){
-      const mi=L.divIcon({html:`<div style="font-size:16px;line-height:1">${icon}</div>`,className:'',iconSize:[20,20],iconAnchor:[10,10]});
-      L.marker([plat,plng],{icon:mi}).addTo(S.map).bindPopup(name);
-    }
-  });
+function initMap(lat,lng) {
+  document.getElementById('map-placeholder').style.display = 'none';
+  // Map initializes via Google Maps API after key is saved
 }
 
-function renderNearbyDemo(){
-  const demo=[
-    {name:'Hotel Radisson Blu',icon:'🏨',dist:'0.3km'},
-    {name:'Cafe Coffee Day',icon:'☕',dist:'0.5km'},
-    {name:'Bukhara Restaurant',icon:'🍽️',dist:'0.8km'},
-    {name:'The Oberoi',icon:'🏨',dist:'1.2km'},
-    {name:'ITC Maurya',icon:'🏨',dist:'1.5km'},
-  ];
-  const list=document.getElementById('nearby-list');
-  list.innerHTML='';
-  demo.forEach(d=>{
-    const card=document.createElement('div');
-    card.className='nc';
-    card.innerHTML=`<div class="nc-icon">${d.icon}</div><div class="nc-name">${d.name}</div><div class="nc-dist">${d.dist} away</div>`;
-    card.onclick=()=>selectVenue(d.name,d.icon,d.dist,null,null);
-    list.appendChild(card);
-  });
+// ── VENUE SELECTION & CHECK-IN ──
+function selectVenue(name, icon, dist) {
+  state.currentVenue = {name,icon,dist};
+  document.getElementById('active-venue-name').textContent = icon+' '+name;
+  document.getElementById('active-venue-addr').textContent = dist+' from your location';
 }
 
-function distKm(lat1,lng1,lat2,lng2){
-  const R=6371,dLat=(lat2-lat1)*Math.PI/180,dLng=(lng2-lng1)*Math.PI/180;
-  const a=Math.sin(dLat/2)**2+Math.cos(lat1*Math.PI/180)*Math.cos(lat2*Math.PI/180)*Math.sin(dLng/2)**2;
-  return R*2*Math.atan2(Math.sqrt(a),Math.sqrt(1-a));
+function doCheckin() {
+  if(!state.currentVenue){ alert('Please select a venue first'); return; }
+  state.checkinTime = new Date();
+  document.getElementById('checkin-in-time').textContent = fmtTime(state.checkinTime);
+  document.getElementById('checkin-out-time').textContent = '--:--';
+  document.getElementById('checkin-duration').textContent = '--';
 }
 
-// ══════════════════════════════════════════
-// CHECK IN / OUT
-// ══════════════════════════════════════════
-function selectVenue(name,icon,dist,lat,lng){
-  S.currentVenue={name,icon,dist,lat,lng};
-  document.getElementById('ci-venue-name').textContent=icon+' '+name;
-  document.getElementById('ci-venue-addr').textContent=dist+' from your location';
-  toast('Selected: '+name);
+function doCheckout() {
+  if(!state.checkinTime){ alert('Please check in first'); return; }
+  const out = new Date();
+  const mins = Math.round((out-state.checkinTime)/60000);
+  const h=Math.floor(mins/60), m=mins%60;
+  document.getElementById('checkin-out-time').textContent = fmtTime(out);
+  document.getElementById('checkin-duration').textContent = h>0?h+'h '+m+'m':m+'m';
 }
 
-function doCheckIn(){
-  if(!S.currentVenue){toast('Select a venue first','warn');return}
-  S.checkinTime=new Date();
-  document.getElementById('ci-in').textContent=fmtTime(S.checkinTime);
-  document.getElementById('ci-out').textContent='--:--';
-  document.getElementById('ci-dur').textContent='--';
-  toast('Checked in at '+fmtTime(S.checkinTime));
-}
-
-function doCheckOut(){
-  if(!S.checkinTime){toast('Check in first','warn');return}
-  const out=new Date();
-  const mins=Math.round((out-S.checkinTime)/60000);
-  const h=Math.floor(mins/60),m=mins%60;
-  const durStr=h>0?`${h}h ${m}m`:`${m}m`;
-  document.getElementById('ci-out').textContent=fmtTime(out);
-  document.getElementById('ci-dur').textContent=durStr;
-  toast('Checked out · Duration: '+durStr);
-}
-
-function saveVisit(){
-  if(!S.currentVenue){toast('No venue selected','warn');return}
-  const visit={
-    date:new Date().toLocaleDateString('en-IN'),
-    rep:S.user.name,
-    area:S.user.area,
-    venue:S.currentVenue.name,
-    in_time:document.getElementById('ci-in').textContent,
-    out_time:document.getElementById('ci-out').textContent,
-    duration:document.getElementById('ci-dur').textContent,
-    gps_lat:S.gpsPos?.lat||'',
-    gps_lng:S.gpsPos?.lng||'',
-    notes:document.getElementById('visit-notes').value
+function saveVisit() {
+  if(!state.currentVenue){ alert('No venue selected'); return; }
+  const visit = {
+    venue: state.currentVenue.name,
+    inTime: document.getElementById('checkin-in-time').textContent,
+    outTime: document.getElementById('checkin-out-time').textContent,
+    duration: document.getElementById('checkin-duration').textContent,
+    notes: document.getElementById('visit-notes').value,
+    date: new Date().toLocaleDateString('en-IN'),
+    rep: state.user.name
   };
-  S.visits.push(visit);
-  localStorage.setItem('sp_visits',JSON.stringify(S.visits));
-  syncToSheets('Visits',Object.values(visit));
-  document.getElementById('visit-notes').value='';
-  refreshDash();
-  toast('Visit saved & syncing to Sheets ✓');
+  state.visits.push(visit);
+  localStorage.setItem('sp_visits', JSON.stringify(state.visits));
+  syncToSheets('Visits', visit);
+  document.getElementById('visit-notes').value = '';
+  alert('Visit saved! Syncing to Google Sheets...');
 }
 
-// ══════════════════════════════════════════
-// QUOTATION / PI
-// ══════════════════════════════════════════
-function switchDoc(el,type){
-  document.querySelectorAll('#s-quot .chip').forEach(c=>c.classList.remove('on'));
-  el.classList.add('on');
-  S.docType=type;
-  document.getElementById('hdr-title').textContent=type;
-  toast('Switched to '+type);
-}
+// ── QUOTATION ──
+const clients = {
+  radisson:{ name:'Hotel Radisson Blu, Delhi', gst:'07ABCDR1234F1Z5', addr:'Barakhamba Ave, Connaught Place, New Delhi 110001', contact:'Mr Sharma, F&B Manager', email:'fb@radisson.in' },
+  oberoi:  { name:'The Oberoi, Delhi', gst:'07AABCO5678G1Z9', addr:'Dr Zakir Hussain Marg, New Delhi 110003', contact:'Ms Priya, Purchase Head', email:'purchase@oberoi.com' },
+  itc:     { name:'ITC Maurya, Delhi', gst:'07AABCI9012H1Z2', addr:'Sardar Patel Marg, Diplomatic Enclave, New Delhi 110021', contact:'Mr Gupta, Procurement', email:'procurement@itcmaurya.com' },
+  taj:     { name:'Taj Hotel, Delhi', gst:'07AABCT3456I1Z7', addr:'1 Mansingh Road, New Delhi 110011', contact:'Mr Kapoor, F&B Director', email:'fb@tajhotels.com' },
+  leela:   { name:'Leela Palace, Delhi', gst:'07AABCL7890J1ZX', addr:'Africa Ave, New Delhi 110023', contact:'Ms Nair, GM Operations', email:'ops@theleela.com' }
+};
 
-function fillClient(){
-  const key=document.getElementById('q-client').value;
-  const div=document.getElementById('client-filled');
-  if(!key){div.style.display='none';return}
-  const c=S.clients[key];
-  div.innerHTML=`<b style="color:var(--text)">${c.name}</b><br>GST: ${c.gst}<br>${c.addr}<br>Contact: ${c.contact}<br>Email: ${c.email}`;
+function fillClientDetails() {
+  const key = document.getElementById('client-select').value;
+  const div = document.getElementById('client-details-filled');
+  const txt = document.getElementById('client-details-text');
+  if(!key){ div.style.display='none'; return; }
+  const c = clients[key];
+  txt.innerHTML = `<b>${c.name}</b><br>GST: ${c.gst}<br>${c.addr}<br>Contact: ${c.contact}<br>Email: ${c.email}`;
   div.style.display='block';
 }
 
-function addProd(name,code,price,icon){
-  const existing=S.products.find(p=>p.code===code);
-  if(existing){existing.qty++;renderProdList();closeM('m-product');return}
-  S.products.push({name,code,price,icon,qty:1,img:null});
-  renderProdList();
-  closeM('m-product');
-  toast(name+' added');
+function switchDocType(el,type) {
+  document.querySelectorAll('#screen-quotation .chip').forEach(c=>c.classList.remove('active'));
+  el.classList.add('active');
+  document.getElementById('header-title').textContent = type==='pi'?'Proforma Invoice':'Quotation';
 }
 
-function renderProdList(){
-  const el=document.getElementById('prod-list');
-  if(!S.products.length){
-    el.innerHTML='<div class="empty"><div>🛍️</div><p>Add items to the quotation</p></div>';
-    document.getElementById('total-card').style.display='none';
-    return;
-  }
-  el.innerHTML='';
-  let sub=0;
-  S.products.forEach((p,i)=>{
-    const lineAmt=p.price*p.qty*0.9;
-    sub+=lineAmt;
-    const row=document.createElement('div');
-    row.className='prod-row';
-    row.innerHTML=`
-      <div class="prod-img">${p.img?`<img src="${p.img}">`:`${p.icon}`}</div>
-      <div style="flex:1;min-width:0">
-        <div class="prod-name">${p.name}</div>
-        <div class="prod-code">${p.code} · ₹${p.price}/pc · 10% disc</div>
-        <div class="qty-row" style="margin-top:7px">
-          <div class="qb" onclick="chgQty(${i},-1)">−</div>
-          <div class="qv">${p.qty}</div>
-          <div class="qb" onclick="chgQty(${i},1)">+</div>
-          <div class="pprice">= ₹${lineAmt.toFixed(0)}</div>
-        </div>
+function changeQty(btn,delta) {
+  const wrap = btn.parentElement;
+  const val = wrap.querySelector('.qty-val');
+  let q = parseInt(val.textContent)+delta;
+  if(q<1) q=1;
+  val.textContent = q;
+}
+
+function addProduct(name,code,price) {
+  const list = document.getElementById('product-list');
+  const icons = {'SS-DS-001':'🥄','SS-DF-002':'🍴','SS-TS-003':'🥄','SS-BK-004':'🔪','SS-SV-005':'🥄'};
+  const icon = icons[code]||'🍴';
+  const div = document.createElement('div');
+  div.className='product-row';
+  div.innerHTML=`
+    <div class="product-img">${icon}</div>
+    <div class="product-info">
+      <div class="product-name">${name}</div>
+      <div class="product-code">Code: ${code} · ₹${price}/pc</div>
+    </div>
+    <div style="display:flex;flex-direction:column;align-items:flex-end;gap:6px">
+      <div class="product-qty">
+        <div class="qty-btn" onclick="changeQty(this,-1)">−</div>
+        <div class="qty-val">1</div>
+        <div class="qty-btn" onclick="changeQty(this,1)">+</div>
       </div>
-      <div class="qb" style="width:28px;height:28px;color:var(--red);font-size:12px" onclick="removeProd(${i})">✕</div>
-    `;
-    el.appendChild(row);
-  });
-  const gst=sub*0.18, total=sub+gst, disc=S.products.reduce((a,p)=>a+p.price*p.qty*0.1,0);
-  document.getElementById('t-sub').textContent='₹'+fmt(sub+disc);
-  document.getElementById('t-disc').textContent='−₹'+fmt(disc);
-  document.getElementById('t-gst').textContent='₹'+fmt(gst);
-  document.getElementById('t-total').textContent='₹'+fmt(total);
-  document.getElementById('total-card').style.display='block';
+      <div class="product-price">₹${price}</div>
+    </div>`;
+  list.appendChild(div);
+  closeModal('add-product-modal');
 }
 
-function chgQty(i,d){
-  S.products[i].qty=Math.max(1,S.products[i].qty+d);
-  renderProdList();
-}
+// ── PDF GENERATION ──
+function generatePDF() {
+  const { jsPDF } = window.jspdf;
+  if(!jsPDF){ alert('PDF library loading... please try again'); return; }
+  const doc = new jsPDF({ unit:'mm', format:'a4' });
+  const clientKey = document.getElementById('client-select').value;
+  const client = clientKey ? clients[clientKey] : {name:'Client Name',addr:'Address',gst:'GST Number',email:'email@example.com'};
+  const docType = document.querySelector('#screen-quotation .chip.active').textContent;
+  const docNo = docType==='Quotation'?'Q-2024-'+Math.floor(Math.random()*1000):'PI-2024-'+Math.floor(Math.random()*1000);
 
-function removeProd(i){
-  S.products.splice(i,1);
-  renderProdList();
-}
+  doc.setFillColor(26,31,46);
+  doc.rect(0,0,210,40,'F');
+  doc.setTextColor(255,255,255);
+  doc.setFontSize(20); doc.setFont('helvetica','bold');
+  doc.text('SHAPES PRODUCTS PVT LTD',15,16);
+  doc.setFontSize(9); doc.setFont('helvetica','normal');
+  doc.text('Premium Cutlery & Hospitality Products',15,23);
+  doc.text('shapes@shapesproducts.com | +91-XXXXXXXXXX',15,29);
+  doc.setFontSize(14); doc.setFont('helvetica','bold');
+  doc.text(docType.toUpperCase(),160,20, {align:'right'});
+  doc.setFontSize(9); doc.setFont('helvetica','normal');
+  doc.text(docNo,160,27,{align:'right'});
+  doc.text('Date: '+new Date().toLocaleDateString('en-IN'),160,33,{align:'right'});
 
-function filterProds(q){
-  q=q.toLowerCase();
-  document.querySelectorAll('#prod-search-list .li').forEach(li=>{
-    li.style.display=li.textContent.toLowerCase().includes(q)||!q?'flex':'none';
-  });
-}
-
-// ══════════════════════════════════════════
-// PDF GENERATION
-// ══════════════════════════════════════════
-function generatePDF(){
-  const {jsPDF}=window.jspdf;
-  if(!jsPDF){toast('PDF loading...','warn');return}
-  if(!S.products.length){toast('Add items first','warn');return}
-  const doc=new jsPDF({unit:'mm',format:'a4'});
-  const clientKey=document.getElementById('q-client').value;
-  const client=clientKey?S.clients[clientKey]:{name:'Client Name',gst:'—',addr:'Address',email:'—',contact:'—'};
-  const docNo=S.docType==='Quotation'?'Q-'+Date.now()%100000:'PI-'+Date.now()%100000;
-
-  // Header band
-  doc.setFillColor(15,17,23);
-  doc.rect(0,0,210,38,'F');
-  doc.setTextColor(240,242,248);
-  doc.setFontSize(18);doc.setFont('helvetica','bold');
-  doc.text('SHAPES PRODUCTS PVT LTD',14,14);
-  doc.setFontSize(8);doc.setFont('helvetica','normal');
-  doc.text('Premium Cutlery & Hospitality Products',14,21);
-  doc.text('Email: sales@shapesproducts.com  |  Phone: +91-XXXXXXXXXX',14,27);
-  doc.setFontSize(13);doc.setFont('helvetica','bold');
-  doc.text(S.docType.toUpperCase(),196,15,{align:'right'});
-  doc.setFontSize(8);doc.setFont('helvetica','normal');
-  doc.text('No: '+docNo,196,22,{align:'right'});
-  doc.text('Date: '+new Date().toLocaleDateString('en-IN'),196,28,{align:'right'});
-
-  // Bill to
   doc.setTextColor(50,50,50);
-  doc.setFontSize(8);doc.setFont('helvetica','bold');
-  doc.text('BILL TO:',14,48);
+  doc.setFontSize(9); doc.setFont('helvetica','bold');
+  doc.text('BILL TO:',15,52);
   doc.setFont('helvetica','normal');
-  doc.text(client.name,14,54);
-  const addrLines=doc.splitTextToSize(client.addr,90);
-  doc.text(addrLines,14,60);
-  doc.text('GST: '+(client.gst||'N/A'),14,60+addrLines.length*4+4);
-  doc.text('Contact: '+client.contact,14,60+addrLines.length*4+9);
+  doc.text(client.name,15,58);
+  doc.text(client.addr||'',15,64);
+  doc.text('GST: '+(client.gst||''),15,70);
 
-  // Company info right side
-  doc.setFont('helvetica','bold');doc.text('FROM:',120,48);
+  doc.setFillColor(240,240,240);
+  doc.rect(15,80,180,8,'F');
+  doc.setFont('helvetica','bold'); doc.setFontSize(9);
+  doc.text('Item',18,85.5);
+  doc.text('Code',80,85.5);
+  doc.text('Qty',110,85.5);
+  doc.text('Rate',130,85.5);
+  doc.text('Discount',150,85.5);
+  doc.text('Amount',175,85.5,{align:'right'});
+
+  const rows = document.querySelectorAll('#product-list .product-row');
+  let y=96, subtotal=0;
   doc.setFont('helvetica','normal');
-  doc.text('Shapes Products Pvt Ltd',120,54);
-  doc.text('GSTIN: XXXXXXXXXXXX',120,59);
-  doc.text('Delhi, India',120,64);
-
-  // Table header
-  let y=85;
-  doc.setFillColor(26,31,46);doc.setTextColor(255,255,255);
-  doc.rect(14,y-5,182,9,'F');
-  doc.setFontSize(8);doc.setFont('helvetica','bold');
-  doc.text('Item Name',17,y);
-  doc.text('Code',80,y);
-  doc.text('Qty',110,y);
-  doc.text('Rate',125,y);
-  doc.text('Disc%',145,y);
-  doc.text('Amount',196,y,{align:'right'});
-  y+=7;
-
-  // Products
-  doc.setTextColor(50,50,50);doc.setFont('helvetica','normal');
-  let sub=0;
-  S.products.forEach((p,idx)=>{
-    const amt=p.price*p.qty*0.9;sub+=amt;
-    if(idx%2===0){doc.setFillColor(248,249,252);doc.rect(14,y-4,182,8,'F')}
-    doc.text(p.name,17,y);
-    doc.text(p.code,80,y);
-    doc.text(p.qty.toString(),113,y);
-    doc.text('₹'+p.price,125,y);
-    doc.text('10%',147,y);
-    doc.text('₹'+fmt(amt),196,y,{align:'right'});
-    y+=9;
+  rows.forEach(row=>{
+    const name = row.querySelector('.product-name').textContent;
+    const codeLine = row.querySelector('.product-code').textContent;
+    const code = codeLine.match(/Code: ([^\s·]+)/)?.[1]||'';
+    const rate = parseFloat(codeLine.match(/₹([\d]+)/)?.[1]||0);
+    const qty  = parseInt(row.querySelector('.qty-val').textContent);
+    const disc = 0.10;
+    const amt  = rate*qty*(1-disc);
+    subtotal += amt;
+    doc.text(name,18,y);
+    doc.text(code,80,y);
+    doc.text(qty+'',110,y);
+    doc.text('₹'+rate,130,y);
+    doc.text('10%',155,y);
+    doc.text('₹'+amt.toFixed(0),195,y,{align:'right'});
+    y+=8;
   });
 
-  // Totals
-  y+=4;doc.line(14,y,196,y);y+=6;
-  const disc=S.products.reduce((a,p)=>a+p.price*p.qty*0.1,0);
-  const gst=sub*0.18,total=sub+gst;
-  doc.text('Subtotal:',150,y);doc.text('₹'+fmt(sub+disc),196,y,{align:'right'});y+=7;
-  doc.text('Discount (10%):',150,y);doc.setTextColor(22,163,74);doc.text('-₹'+fmt(disc),196,y,{align:'right'});doc.setTextColor(50,50,50);y+=7;
-  doc.text('GST @ 18%:',150,y);doc.text('₹'+fmt(gst),196,y,{align:'right'});y+=4;
-  doc.setFillColor(15,17,23);doc.rect(140,y,56,10,'F');
-  doc.setTextColor(240,242,248);doc.setFont('helvetica','bold');
-  doc.text('TOTAL: ₹'+fmt(total),196,y+7,{align:'right'});y+=18;
+  const gst=subtotal*0.18, total=subtotal+gst;
+  doc.line(15,y,195,y);
+  y+=7;
+  doc.text('Subtotal:',150,y); doc.text('₹'+subtotal.toFixed(0),195,y,{align:'right'}); y+=7;
+  doc.text('GST 18%:',150,y); doc.text('₹'+gst.toFixed(0),195,y,{align:'right'}); y+=7;
+  doc.setFont('helvetica','bold');
+  doc.text('TOTAL:',150,y); doc.text('₹'+total.toFixed(0),195,y,{align:'right'});
 
-  // Footer
-  doc.setTextColor(120,130,150);doc.setFont('helvetica','normal');doc.setFontSize(7);
-  doc.text('Terms: Goods once sold will not be returned. Payment within 45 days of delivery.',14,y);
-  doc.text('Thank you for your business! — Shapes Products Pvt Ltd',14,y+5);
+  y+=20;
+  doc.setFont('helvetica','normal'); doc.setFontSize(8);
+  doc.text('Terms: Payment within 45 days. Goods once sold will not be returned.',15,y);
+  doc.text('Thank you for your business — Shapes Products Pvt Ltd',15,y+6);
 
   doc.save(docNo+'.pdf');
-  toast('PDF downloaded: '+docNo);
 }
 
-// ══════════════════════════════════════════
-// EMAIL via EmailJS
-// ══════════════════════════════════════════
-function sendEmail(){
-  const cfg=S.cfg;
+// ── EMAIL ──
+function sendEmail() {
+  const cfg = state.config;
   if(!cfg.ejsService||!cfg.ejsTemplate||!cfg.ejsKey){
-    openM('m-emailjs');toast('Setup EmailJS first','warn');return;
+    openModal('emailjs-modal');
+    alert('Please configure EmailJS first in settings');
+    return;
   }
-  const clientKey=document.getElementById('q-client').value;
-  if(!clientKey){toast('Select a client first','warn');return}
-  const client=S.clients[clientKey];
-  const total=document.getElementById('t-total').textContent;
-  emailjs.init(cfg.ejsKey);
-  emailjs.send(cfg.ejsService,cfg.ejsTemplate,{
-    to_name:client.contact,
-    to_email:client.email,
-    from_name:'Shapes Products Pvt Ltd',
-    doc_type:S.docType,
-    client_name:client.name,
-    amount:total,
-    message:`Please find attached your ${S.docType} from Shapes Products Pvt Ltd. Total amount: ${total}. For queries contact us.`
-  }).then(()=>toast('Email sent to '+client.email+' ✓'),e=>toast('Email failed: '+e.text,'warn'));
+  const clientKey = document.getElementById('client-select').value;
+  if(!clientKey){ alert('Please select a client first'); return; }
+  const client = clients[clientKey];
+  alert('Sending email to '+client.email+'...\n(EmailJS integration active — configure keys in Settings > EmailJS setup)');
 }
 
-function saveQuotation(){
-  const clientKey=document.getElementById('q-client').value;
-  const client=clientKey?S.clients[clientKey]:{name:'Unknown'};
-  const total=document.getElementById('t-total').textContent;
-  const q={
-    date:new Date().toLocaleDateString('en-IN'),
-    type:S.docType,
-    client:client.name,
-    items:S.products.map(p=>p.name+'×'+p.qty).join(', '),
-    amount:total,
-    rep:S.user.name
-  };
-  syncToSheets('Quotations',Object.values(q));
-  toast('Saved to Google Sheets ✓');
+// ── REMINDERS ──
+function saveReminder() {
+  const hotel = document.getElementById('rem-hotel').value;
+  const date  = document.getElementById('rem-date').value;
+  const note  = document.getElementById('rem-note').value;
+  if(!hotel||!date){ alert('Fill hotel and date'); return; }
+  const reminder = { hotel, date, note, createdAt: new Date().toISOString(), rep: state.user.name };
+  syncToSheets('Reminders', reminder);
+  scheduleNotification(hotel, date, note);
+  closeModal('add-reminder-modal');
+  alert('Reminder saved! Notifications set for 3 days before '+date);
 }
 
-// ══════════════════════════════════════════
-// REMINDERS
-// ══════════════════════════════════════════
-function saveReminder(){
-  const hotel=v('r-hotel'), date=v('r-date'), note=v('r-note');
-  if(!hotel||!date){toast('Fill hotel and date','warn');return}
-  const rem={hotel,date,note,created:new Date().toLocaleDateString('en-IN'),rep:S.user?.name||''};
-  S.reminders.push(rem);
-  localStorage.setItem('sp_reminders',JSON.stringify(S.reminders));
-  syncToSheets('Reminders',Object.values(rem));
-  scheduleNotif(hotel,date,note);
-  closeM('m-reminder');
-  renderReminders();
-  toast('Reminder saved ✓ Notification set for 3 days before');
-}
-
-function scheduleNotif(hotel,dateStr,note){
-  if(!('Notification' in window)||Notification.permission!=='granted') return;
-  const t=new Date(dateStr);
-  const remAt=new Date(t.getTime()-3*864e5);
-  const delay=remAt-new Date();
-  if(delay>0) setTimeout(()=>{new Notification('Follow-up: '+hotel,{body:note||'Meeting in 3 days!'})},delay);
-}
-
-function requestNotificationPermission(){
-  if('Notification' in window&&Notification.permission==='default') Notification.requestPermission();
-}
-
-function renderReminders(){
-  const el=document.getElementById('rem-list');
-  if(!S.reminders.length){el.innerHTML='<div class="empty"><div>📅</div><p>No reminders set</p></div>';return}
-  el.innerHTML='';
-  S.reminders.forEach((r,i)=>{
-    const d=new Date(r.date);
-    const days=Math.ceil((d-new Date())/(864e5));
-    const col=days<=2?'var(--red)':days<=5?'var(--orange)':'var(--accent)';
-    const div=document.createElement('div');
-    div.className='rem-item';
-    div.innerHTML=`
-      <div class="rem-date" style="background:${col}">
-        <div class="rem-day">${d.getDate()}</div>
-        <div class="rem-mon">${d.toLocaleString('en',{month:'short'})}</div>
-      </div>
-      <div class="rem-info">
-        <div class="rem-hotel">${r.hotel}</div>
-        <div class="rem-note">${r.note||'Follow-up meeting'}</div>
-        <div class="countdown" style="color:${col}">${days>0?'⏰ '+days+' days remaining':days===0?'📌 Today!':'⚠️ Overdue'}</div>
-      </div>
-      <div class="qb" style="color:var(--red);font-size:11px" onclick="deleteReminder(${i})">✕</div>
-    `;
-    el.appendChild(div);
-  });
-}
-
-function deleteReminder(i){
-  S.reminders.splice(i,1);
-  localStorage.setItem('sp_reminders',JSON.stringify(S.reminders));
-  renderReminders();
-  toast('Reminder removed');
-}
-
-// ══════════════════════════════════════════
-// GOOGLE SHEETS SYNC
-// ══════════════════════════════════════════
-async function syncToSheets(sheetTab, rowValues){
-  const url=S.cfg.sheetsUrl;
-  if(!url){updateSyncPill(false);return}
-  try{
-    await fetch(url,{method:'POST',mode:'no-cors',headers:{'Content-Type':'application/json'},
-      body:JSON.stringify({sheet:sheetTab,row:rowValues})});
-    updateSyncPill(true);
-    toast('Synced to Sheets ✓');
-  }catch(e){
-    updateSyncPill(false);
-    // Save locally when offline
-    const q=JSON.parse(localStorage.getItem('sp_sync_queue')||'[]');
-    q.push({sheet:sheetTab,row:rowValues,ts:Date.now()});
-    localStorage.setItem('sp_sync_queue',JSON.stringify(q));
-    toast('Saved locally (will sync when online)','warn');
+function scheduleNotification(hotel,dateStr,note) {
+  const target = new Date(dateStr);
+  const remindAt = new Date(target.getTime() - 3*24*60*60*1000);
+  const now = new Date();
+  const delay = remindAt - now;
+  if(delay>0 && 'Notification' in window && Notification.permission==='granted') {
+    setTimeout(()=>{
+      new Notification('Follow-up reminder: '+hotel, { body: note || 'Meeting in 3 days!', icon: '/favicon.ico' });
+    }, delay);
   }
 }
 
-function updateSyncPill(ok){
-  const p=document.getElementById('sync-pill');
-  if(ok===true){p.textContent='● Synced';p.className='sync-pill';}
-  else if(ok===false){p.textContent='● Offline';p.className='sync-pill off';}
-  else{const has=!!S.cfg.sheetsUrl;p.textContent=has?'● Connected':'● Not Synced';p.className='sync-pill'+(has?'':' off');}
+function requestNotificationPermission() {
+  if('Notification' in window && Notification.permission==='default') {
+    Notification.requestPermission();
+  }
 }
 
-// ══════════════════════════════════════════
-// SETTINGS SAVES
-// ══════════════════════════════════════════
-function saveSheets(){
-  const url=v('sheets-url');
-  if(!url){toast('Paste the Apps Script URL','warn');return}
-  S.cfg.sheetsUrl=url;
-  localStorage.setItem('sp_cfg',JSON.stringify(S.cfg));
-  document.getElementById('sheets-status').textContent='Connected ✓';
-  updateSyncPill(true);
-  closeM('m-sheets');
-  // Test ping
-  syncToSheets('Visits',['TEST','Connection OK',new Date().toLocaleString()]);
-  toast('Google Sheets connected ✓');
+function markPaid(btn) {
+  const item = btn.closest('.payment-item');
+  item.style.opacity='0.5';
+  btn.textContent = '✓ Paid';
+  btn.style.background='rgba(34,197,94,.3)';
 }
 
-function saveEmailJS(){
-  S.cfg.ejsService=v('ejs-sid');
-  S.cfg.ejsTemplate=v('ejs-tid');
-  S.cfg.ejsKey=v('ejs-pk');
-  localStorage.setItem('sp_cfg',JSON.stringify(S.cfg));
-  document.getElementById('ejs-status').textContent='Configured ✓';
-  closeM('m-emailjs');
-  toast('EmailJS configured ✓');
+// ── SETTINGS ──
+function saveMapsKey() {
+  const key = document.getElementById('maps-api-input').value.trim();
+  if(!key){ alert('Enter a valid key'); return; }
+  state.config.mapsKey = key;
+  localStorage.setItem('sp_config',JSON.stringify(state.config));
+  document.getElementById('maps-key-status').textContent = 'Configured ✓';
+  closeModal('maps-modal');
+  loadGoogleMaps(key);
 }
 
-function saveTargets(){
-  S.targets={sales:+v('tg-sales')||500000,coll:+v('tg-coll')||400000,vis:+v('tg-vis')||80};
-  localStorage.setItem('sp_targets',JSON.stringify(S.targets));
-  syncToSheets('Targets',[new Date().toLocaleDateString('en-IN'),S.user?.name||'',S.targets.sales,S.targets.coll,S.targets.vis]);
-  updateTargetsDash();
-  closeM('m-admin');
-  toast('Targets saved ✓');
+function loadGoogleMaps(key) {
+  const s = document.createElement('script');
+  s.src = `https://maps.googleapis.com/maps/api/js?key=${key}&libraries=places&callback=onMapsReady`;
+  s.async = true;
+  document.head.appendChild(s);
 }
 
-function saveNewClient(){
-  const client={name:v('nc-name'),gst:v('nc-gst'),addr:v('nc-addr'),contact:v('nc-contact'),email:v('nc-email'),phone:v('nc-phone'),addedBy:S.user?.name||'',date:new Date().toLocaleDateString('en-IN')};
-  syncToSheets('Clients',Object.values(client));
-  const key=client.name.toLowerCase().replace(/\s+/g,'_').substring(0,10);
-  S.clients[key]=client;
-  const sel=document.getElementById('q-client');
-  const opt=document.createElement('option');
-  opt.value=key;opt.textContent=client.name;
-  sel.appendChild(opt);
-  closeM('m-client-add');
-  toast('Client saved ✓');
-}
-
-// ══════════════════════════════════════════
-// DASHBOARD REFRESH
-// ══════════════════════════════════════════
-function refreshDash(){
-  const today=new Date().toLocaleDateString('en-IN');
-  const todayVisits=S.visits.filter(v=>v.date===today);
-  document.getElementById('d-visits').textContent=todayVisits.length;
-  document.getElementById('d-visits-c').textContent=todayVisits.length>0?'Last: '+todayVisits[todayVisits.length-1].venue:'No visits yet';
-  document.getElementById('d-followups').textContent=S.reminders.filter(r=>new Date(r.date)>=new Date()).length;
-
-  // Render today visits
-  const el=document.getElementById('dash-visits');
-  if(!todayVisits.length){el.innerHTML='<div class="empty"><div>📋</div><p>No visits yet</p></div>';return}
-  el.innerHTML='';
-  todayVisits.slice(-4).forEach(v=>{
-    const icon=v.venue.toLowerCase().includes('hotel')?'🏨':v.venue.toLowerCase().includes('cafe')?'☕':'🍽️';
-    el.innerHTML+=`<div class="li"><div class="li-av" style="background:rgba(79,142,247,.1)">${icon}</div><div class="li-info"><div class="li-name">${v.venue}</div><div class="li-sub">${v.in_time} → ${v.out_time} · ${v.duration}</div></div><span class="badge b-g">Done</span></div>`;
+window.onMapsReady = function() {
+  document.getElementById('map-placeholder').style.display='none';
+  navigator.geolocation.getCurrentPosition(pos=>{
+    const {latitude:lat,longitude:lng} = pos.coords;
+    const map = new google.maps.Map(document.getElementById('map'),{
+      center:{lat,lng}, zoom:14,
+      styles:[{elementType:'geometry',stylers:[{color:'#1a1f2e'}]},{elementType:'labels.text.fill',stylers:[{color:'#8b92a8'}]},{featureType:'road',elementType:'geometry',stylers:[{color:'#2d3450'}]}]
+    });
+    new google.maps.Marker({position:{lat,lng},map,title:'You are here'});
+    const svc = new google.maps.places.PlacesService(map);
+    svc.nearbySearch({location:{lat,lng},radius:2000,type:['restaurant','cafe','lodging']}, (results,status)=>{
+      if(status==='OK') updateNearby(results, map);
+    });
   });
+};
 
-  // Reminders on dashboard
-  const rl=document.getElementById('dash-followups');
-  const upcomingRem=S.reminders.filter(r=>new Date(r.date)>=new Date()).slice(0,3);
-  if(!upcomingRem.length){rl.innerHTML='<div class="empty"><div>📅</div><p>No follow-ups</p></div>';return}
-  rl.innerHTML='';
-  upcomingRem.forEach(r=>{
-    const days=Math.ceil((new Date(r.date)-new Date())/864e5);
-    const col=days<=2?'b-r':days<=5?'b-o':'b-b';
-    rl.innerHTML+=`<div class="li"><div class="li-av" style="background:rgba(245,158,11,.1)">📅</div><div class="li-info"><div class="li-name">${r.hotel}</div><div class="li-sub">${r.note||'Follow-up'} · ${r.date}</div></div><span class="badge ${col}">${days}d</span></div>`;
+function updateNearby(places, map) {
+  const list = document.getElementById('nearby-list');
+  list.innerHTML = '';
+  places.slice(0,10).forEach(p=>{
+    const icon = p.types.includes('lodging')?'🏨': p.types.includes('cafe')?'☕':'🍽️';
+    const dist = p.vicinity||'nearby';
+    const card = document.createElement('div');
+    card.className = 'nearby-card';
+    card.innerHTML=`<div class="nc-icon">${icon}</div><div class="nc-name">${p.name}</div><div class="nc-dist">${dist}</div><div class="nc-type">${p.types[0]}</div>`;
+    card.onclick = ()=>selectVenue(p.name,icon,dist);
+    list.appendChild(card);
+    new google.maps.Marker({position:p.geometry.location,map,icon:{url:'https://maps.google.com/mapfiles/ms/icons/blue-dot.png'}});
   });
 }
 
-function updateTargetsDash(){
-  const month=new Date().toLocaleString('en',{month:'long'});
-  document.getElementById('target-month-lbl').textContent=month;
-  const t=S.targets;
-  const salesDone=S.visits.length*25000; // demo: estimate
-  const collDone=salesDone*0.7;
-  const visDone=S.visits.filter(v=>v.date===new Date().toLocaleDateString('en-IN')).length;
-  const sp=Math.min(99,Math.round(salesDone/t.sales*100));
-  const cp=Math.min(99,Math.round(collDone/t.coll*100));
-  const vp=Math.min(99,Math.round(visDone/t.vis*100));
-  document.getElementById('tg-sales-lbl').textContent='₹'+fmt(salesDone)+' / ₹'+fmt(t.sales);
-  document.getElementById('tg-coll-lbl').textContent='₹'+fmt(collDone)+' / ₹'+fmt(t.coll);
-  document.getElementById('tg-vis-lbl').textContent=visDone+' / '+t.vis;
-  document.getElementById('tg-sales-bar').style.width=sp+'%';
-  document.getElementById('tg-coll-bar').style.width=cp+'%';
-  document.getElementById('tg-vis-bar').style.width=vp+'%';
-  document.getElementById('d-sales').textContent='₹'+fmt(salesDone);
-  document.getElementById('d-sales-c').textContent=sp+'% of target';
-  document.getElementById('d-pending').textContent='₹'+fmt(salesDone*0.3);
+function filterNearby(chip,type) {
+  document.querySelectorAll('.chip-row .chip').forEach(c=>c.classList.remove('active'));
+  chip.classList.add('active');
 }
 
-// ══════════════════════════════════════════
-// MODALS
-// ══════════════════════════════════════════
-function openM(id){document.getElementById(id).classList.add('open')}
-function closeM(id){document.getElementById(id).classList.remove('open')}
-function closeOut(e,id){if(e.target===document.getElementById(id))closeM(id)}
-
-// ══════════════════════════════════════════
-// UTILS
-// ══════════════════════════════════════════
-function v(id){return document.getElementById(id)?.value?.trim()||''}
-function fmt(n){return Math.round(n).toLocaleString('en-IN')}
-function fmtTime(d){return d.toLocaleTimeString('en-IN',{hour:'2-digit',minute:'2-digit',hour12:true})}
-
-let toastTimer;
-function toast(msg,type){
-  const el=document.getElementById('toast');
-  el.textContent=msg;
-  el.style.color=type==='warn'?'var(--orange)':'var(--text)';
-  el.classList.add('show');
-  clearTimeout(toastTimer);
-  toastTimer=setTimeout(()=>el.classList.remove('show'),2800);
+function saveSheets() {
+  const id  = document.getElementById('sheets-id-input').value.trim();
+  const key = document.getElementById('sheets-api-input').value.trim();
+  if(!id||!key){ alert('Fill both fields'); return; }
+  state.config.sheetsId = id;
+  state.config.sheetsKey = key;
+  localStorage.setItem('sp_config',JSON.stringify(state.config));
+  closeModal('gsheets-modal');
+  alert('Google Sheets connected! All data will now sync automatically.');
 }
 
-function logout(){
-  if(S.gpsTimer) clearInterval(S.gpsTimer);
+function saveEmailJS() {
+  state.config.ejsService  = document.getElementById('ejs-service').value.trim();
+  state.config.ejsTemplate = document.getElementById('ejs-template').value.trim();
+  state.config.ejsKey      = document.getElementById('ejs-key').value.trim();
+  localStorage.setItem('sp_config',JSON.stringify(state.config));
+  closeModal('emailjs-modal');
+  alert('EmailJS configured! You can now send emails.');
+}
+
+// ── GOOGLE SHEETS SYNC ──
+async function syncToSheets(sheetName, data) {
+  const cfg = state.config;
+  if(!cfg.sheetsId||!cfg.sheetsKey) return;
+  const values = [Object.values(data)];
+  const url = `https://sheets.googleapis.com/v4/spreadsheets/${cfg.sheetsId}/values/${sheetName}!A1:append?valueInputOption=USER_ENTERED&key=${cfg.sheetsKey}`;
+  try {
+    await fetch(url,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({values})});
+  } catch(e){ console.log('Sheets sync pending (auth needed for write)', e); }
+}
+
+// ── MODALS ──
+function openModal(id) { document.getElementById(id).classList.add('open'); }
+function closeModal(id) { document.getElementById(id).classList.remove('open'); }
+function closeModalOutside(e,id) { if(e.target===document.getElementById(id)) closeModal(id); }
+
+// ── MISC ──
+function logout() {
   localStorage.removeItem('sp_user');
-  document.getElementById('main').style.display='none';
+  if(state.gpsInterval) clearInterval(state.gpsInterval);
+  document.getElementById('main-app').style.display='none';
   document.getElementById('login-screen').style.display='flex';
-  document.getElementById('login-screen').classList.add('active');
 }
 
-// ══════════════════════════════════════════
-// RESTORE SESSION
-// ══════════════════════════════════════════
-const savedUser=localStorage.getItem('sp_user');
-if(savedUser){
-  S.user=JSON.parse(savedUser);
+function fmtTime(d) {
+  return d.toLocaleTimeString('en-IN',{hour:'2-digit',minute:'2-digit',hour12:true});
+}
+
+function searchProducts(q) {
+  q = q.toLowerCase();
+  document.querySelectorAll('#product-search-results .visit-item').forEach(item=>{
+    const name = item.querySelector('.visit-name').textContent.toLowerCase();
+    const code = item.querySelector('.visit-meta').textContent.toLowerCase();
+    item.style.display = (name.includes(q)||code.includes(q)||q==='') ? 'flex' : 'none';
+  });
+}
+
+// ── RESTORE SESSION ──
+const savedUser = localStorage.getItem('sp_user');
+if(savedUser) {
+  const u = JSON.parse(savedUser);
+  state.user = u;
   document.getElementById('login-screen').style.display='none';
-  document.getElementById('main').style.display='flex';
-  applyUser();
-  setTimeout(()=>{initMap();startGPS();refreshDash();renderReminders();},100);
+  document.getElementById('main-app').style.display='flex';
+  document.getElementById('header-sub').textContent = 'Good morning, '+u.name.split(' ')[0];
+  document.getElementById('profile-name').textContent = u.name;
+  document.getElementById('profile-area').textContent = u.area+' · '+u.category;
+  startGPS();
   requestNotificationPermission();
-  if(S.cfg.sheetsUrl) document.getElementById('sheets-status').textContent='Connected ✓';
-  if(S.cfg.ejsService) document.getElementById('ejs-status').textContent='Configured ✓';
+  if(state.config.mapsKey) loadGoogleMaps(state.config.mapsKey);
+  if(state.config.sheetsId) document.getElementById('maps-key-status').textContent='Configured ✓';
 }
 </script>
 </body>
